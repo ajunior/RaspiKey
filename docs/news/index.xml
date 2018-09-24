@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>News on RaspiKey</title>
+    <link>https://raspikey.com/news/</link>
+    <description>Recent content in News on RaspiKey</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Mon, 24 Sep 2018 00:44:36 +0100</lastBuildDate>
+    
+	<atom:link href="https://raspikey.com/news/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>RaspiKey 1.0.6-beta released</title>
+      <link>https://raspikey.com/news/post-title/</link>
+      <pubDate>Mon, 24 Sep 2018 00:44:36 +0100</pubDate>
+      
+      <guid>https://raspikey.com/news/post-title/</guid>
+      <description> Support for generic keyboard devices. Key maping fix for international keyboard versions.  </description>
+    </item>
+    
+  </channel>
+</rss>

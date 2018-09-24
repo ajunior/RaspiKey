@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RaspiKey</title>
+    <link>https://raspikey.com/</link>
+    <description>Recent content on RaspiKey</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Mon, 24 Sep 2018 00:44:36 +0100</lastBuildDate>
+    
+	<atom:link href="https://raspikey.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>RaspiKey 1.0.6-beta released</title>
+      <link>https://raspikey.com/news/post-title/</link>
+      <pubDate>Mon, 24 Sep 2018 00:44:36 +0100</pubDate>
+      
+      <guid>https://raspikey.com/news/post-title/</guid>
+      <description> Support for generic keyboard devices. Key maping fix for international keyboard versions.  </description>
+    </item>
+    
+    <item>
+      <title>Contact</title>
+      <link>https://raspikey.com/contact/</link>
+      <pubDate>Sun, 23 Sep 2018 00:38:17 +0100</pubDate>
+      
+      <guid>https://raspikey.com/contact/</guid>
+      <description>E-mail: samartzidis@gmail.com</description>
+    </item>
+    
+    <item>
+      <title>Licensing</title>
+      <link>https://raspikey.com/licensing/</link>
+      <pubDate>Sun, 23 Sep 2018 00:38:17 +0100</pubDate>
+      
+      <guid>https://raspikey.com/licensing/</guid>
+      <description>This section is currently under development. If you would like to request a beta testing license please email: samartzidis@gmail.com.
+  RaspiKey Hardware Id:          -- </description>
+    </item>
+    
+    <item>
+      <title>Conected and Available Devices</title>
+      <link>https://raspikey.com/gallery/shot1/</link>
+      <pubDate>Mon, 15 May 2017 22:25:16 -0700</pubDate>
+      
+      <guid>https://raspikey.com/gallery/shot1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Device Information</title>
+      <link>https://raspikey.com/gallery/shot3/</link>
+      <pubDate>Mon, 15 May 2017 22:25:16 -0700</pubDate>
+      
+      <guid>https://raspikey.com/gallery/shot3/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Legacy Pairing</title>
+      <link>https://raspikey.com/gallery/shot2/</link>
+      <pubDate>Mon, 15 May 2017 22:25:16 -0700</pubDate>
+      
+      <guid>https://raspikey.com/gallery/shot2/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
