@@ -62,13 +62,13 @@ Apple Keyboards Keymap
       <th>Output Logical Key</th>
     </tr>
     <tr>
-      <td>Ctrl</td><td>Fn</td>
+      <td><kbd>LCtrl</kbd></td><td><kbd>Fn</kbd></td>
     </tr>
     <tr>
-      <td>Fn</td><td>Left Ctrl</td>
+      <td><kbd>fn</kbd></td><td><kbd>LCtrl</kbd></td>
     </tr>
     <tr>
-      <td>Eject</td><td>Delete</td>
+      <td><kbd>⏏︎ Eject</kbd></td><td><kbd>Del</kbd></td>
     </tr>
   </table>
 
@@ -78,34 +78,34 @@ Apple Keyboards Keymap
       <th>Output Logical Key</th>
     </tr>
     <tr>
-      <td>Fn + [F1-F6]</td><td>[F13-F18]</td>
+      <td><kbd>fn</kbd>+<kbd>[F1]</kbd>...<kbd>[F6]</kbd></td><td><kbd>[F13]</kbd>...<kbd>[F18]</kbd></td>
     </tr>
     <tr>
-      <td>Fn + Left Ctrl</td><td>Right Ctrl</td>
+      <td><kbd>fn</kbd>+<kbd>LCtrl</kbd></td><td><kbd>RCtrl</kbd></td>
     </tr>
     <tr>
-      <td>Fn + Enter</td><td>Insert</td>
+      <td><kbd>fn</kbd>+<kbd>Return</kbd></td><td><kbd>Insert</kbd></td>
     </tr>
     <tr>
-      <td>Fn + P</td><td>Print Screen</td>
+      <td><kbd>fn</kbd>+<kbd>P</kbd></td><td><kbd>Prt Scr</kbd></td>
     </tr>
     <tr>
-      <td>Fn + S</td><td>Scroll Lock</td>
+      <td><kbd>fn</kbd>+<kbd>S</kbd></td><td><kbd>Scr Lck</kbd></td>
     </tr>
     <tr>
-      <td>Fn + B</td><td>Pause/Break</td>
+      <td><kbd>fn</kbd>+<kbd>B</kbd></td><td><kbd>Pause/Break</kbd></td>
     </tr>
     <tr>
-      <td>Fn + Up</td><td>Page Up</td>
+      <td><kbd>fn</kbd>+<kbd>&uarr;</kbd></td><td><kbd>Pg Up</kbd></td>
     </tr>
     <tr>
-      <td>Fn + Down</td><td>Page Down</td>
+      <td><kbd>fn</kbd>+<kbd>&darr;</kbd></td><td><kbd>Pg Down</kbd></td>
     </tr>
     <tr>
-      <td>Fn + Left</td><td>Home</td>
+      <td><kbd>fn</kbd>+<kbd>&larr;</kbd></td><td><kbd>Home</kbd></td>
     </tr>
     <tr>
-      <td>Fn + Right</td><td>End</td>
+      <td><kbd>fn</kbd>+<kbd>&rarr;</kbd></td><td><kbd>End</kbd></td>
     </tr>
   </table>
 
