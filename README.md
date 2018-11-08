@@ -45,7 +45,7 @@ Installation and Use
 
 BETA License
 -------
-RaspiKey is currently in BETA. Unless licensed, it will run for 30 minutes and then turn off automatically. If you would like a permanent license for testing please [e-mail me](https://github.com/samartzidis/RaspiKey) and I'll be happy to send you one.
+RaspiKey is currently in BETA. Unless licensed, it will run for 30 minutes and then turn off automatically. If you would like a permanent license for testing please [e-mail me](https://github.com/samartzidis) and I'll be happy to send you one.
 
 Known Issues
 ------------
@@ -116,3 +116,6 @@ Planned Futures
 *   Support for user customizable keymap and programmability.
 *   Support for multimedia or special key functions for more Bluetooth keyboards.
 *   Support for multiple Bluetooth keyboards connected in parallel.
+
+
+<a href="https://github.com/samartzidis/RaspiKey"><img align="right" src="images/github-small.png"/></a>
