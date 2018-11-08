@@ -3,7 +3,7 @@
 
 RaspiKey converts any bluetooth keyboard to a universal wired USB (HID) keyboard. RaspiKey is software that runs on the [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) board.
 
-It is particularly useful for the Apple Wireless keyboards because it can translate their exotic keymap to that of a standard USB PC keyboard. This an easy way to get them to seamlessly work on a Windows PC (or any other device that is not an Apple computer), without the need to install custom software or special drivers on it.
+It is particularly useful for the Apple Wireless keyboards because it can translate their exotic keymap to that of a standard USB PC keyboard. This an easy way to get them to seamlessly work on a Windows PC (or any other device that is not an Apple computer), without the need to install software on it.
 
 ![raspikey-diagram](images/raspikey-diagram.png)
 
