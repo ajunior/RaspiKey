@@ -1,5 +1,5 @@
 ![raspikey-logo](images/raspikey-logo.png)
-###### Universal Bluetooth to USB HID Adapter
+###### Universal Bluetooth to USB HID Keyboard Adapter
 
 RaspiKey converts any bluetooth keyboard to a universal wired USB (HID) keyboard. RaspiKey is software that runs on the [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) board.
 
