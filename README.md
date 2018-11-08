@@ -58,54 +58,53 @@ Apple Keyboards Keymap
 
 <table>
     <tr>
-      <th>Input Physical Key(s)</th>
-      <th>Output Logical Key</th>
+      <th>Input Key(s)</th>
+      <th>Output Key</th>
     </tr>
     <tr>
       <td><kbd>LCtrl</kbd></td><td><kbd>Fn</kbd></td>
     </tr>
     <tr>
-      <td><kbd>fn</kbd></td><td><kbd>LCtrl</kbd></td>
+      <td><kbd>Fn</kbd></td><td><kbd>LCtrl</kbd></td>
     </tr>
     <tr>
       <td><kbd>⏏︎ Eject</kbd></td><td><kbd>Del</kbd></td>
     </tr>
-  </table>
-
-<table>
     <tr>
-      <th>Input Logical Key(s)</th>
-      <th>Output Logical Key</th>
+      <td><kbd>⌘ Cmd</kbd></td><td><kbd>Alt</kbd></td>
+    </tr>    
+    <tr>
+      <td><kbd>⌥ Alt</kbd></td><td><kbd>Cmd</kbd></td>
+    </tr>    
+    <tr>
+      <td><kbd>Fn</kbd>+<kbd>[F1]</kbd>...<kbd>[F6]</kbd></td><td><kbd>[F13]</kbd>...<kbd>[F18]</kbd></td>
     </tr>
     <tr>
-      <td><kbd>fn</kbd>+<kbd>[F1]</kbd>...<kbd>[F6]</kbd></td><td><kbd>[F13]</kbd>...<kbd>[F18]</kbd></td>
+      <td><kbd>Fn</kbd>+<kbd>LCtrl</kbd></td><td><kbd>RCtrl</kbd></td>
     </tr>
     <tr>
-      <td><kbd>fn</kbd>+<kbd>LCtrl</kbd></td><td><kbd>RCtrl</kbd></td>
+      <td><kbd>Fn</kbd>+<kbd>Return</kbd></td><td><kbd>Insert</kbd></td>
     </tr>
     <tr>
-      <td><kbd>fn</kbd>+<kbd>Return</kbd></td><td><kbd>Insert</kbd></td>
+      <td><kbd>Fn</kbd>+<kbd>P</kbd></td><td><kbd>Prt Scr</kbd></td>
     </tr>
     <tr>
-      <td><kbd>fn</kbd>+<kbd>P</kbd></td><td><kbd>Prt Scr</kbd></td>
+      <td><kbd>Fn</kbd>+<kbd>S</kbd></td><td><kbd>Scr Lck</kbd></td>
     </tr>
     <tr>
-      <td><kbd>fn</kbd>+<kbd>S</kbd></td><td><kbd>Scr Lck</kbd></td>
+      <td><kbd>Fn</kbd>+<kbd>B</kbd></td><td><kbd>Pause/Break</kbd></td>
     </tr>
     <tr>
-      <td><kbd>fn</kbd>+<kbd>B</kbd></td><td><kbd>Pause/Break</kbd></td>
+      <td><kbd>Fn</kbd>+<kbd>&uarr;</kbd></td><td><kbd>Pg Up</kbd></td>
     </tr>
     <tr>
-      <td><kbd>fn</kbd>+<kbd>&uarr;</kbd></td><td><kbd>Pg Up</kbd></td>
+      <td><kbd>Fn</kbd>+<kbd>&darr;</kbd></td><td><kbd>Pg Down</kbd></td>
     </tr>
     <tr>
-      <td><kbd>fn</kbd>+<kbd>&darr;</kbd></td><td><kbd>Pg Down</kbd></td>
+      <td><kbd>Fn</kbd>+<kbd>&larr;</kbd></td><td><kbd>Home</kbd></td>
     </tr>
     <tr>
-      <td><kbd>fn</kbd>+<kbd>&larr;</kbd></td><td><kbd>Home</kbd></td>
-    </tr>
-    <tr>
-      <td><kbd>fn</kbd>+<kbd>&rarr;</kbd></td><td><kbd>End</kbd></td>
+      <td><kbd>Fn</kbd>+<kbd>&rarr;</kbd></td><td><kbd>End</kbd></td>
     </tr>
   </table>
 
