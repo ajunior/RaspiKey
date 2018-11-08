@@ -10,7 +10,7 @@ It is particularly useful for the Apple Wireless keyboards because it can transl
 Features
 --------
 
-*   RaspiKey can actually host **any bluetooth keyboard** but it currently offers full keyboard compatibility (e.g. special multimedia keys support) only for the Apple Wireless (A1314) and the Apple Magic (A1644) keyboard models.
+*   RaspiKey can host **any bluetooth keyboard** but it currently offers full keyboard compatibility (e.g. special multimedia keys support) only for the Apple Wireless (A1314) and the Apple Magic (A1644) keyboard models.
 *   **Zero PC software footprint**. It does not require any driver installation or specific software installation on your PC that uses a connected keyboard.
 *   **Self-consistent**. It does not require external power. It is self-powered through the PC USB port.
 *   It is **inherently secure**. As it is a hardware device, there is no software driver running on your PC that can be hacked or compromised compared to a software driver solution.
