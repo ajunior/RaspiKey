@@ -5,7 +5,7 @@ RaspiKey converts a bluetooth keyboard device to a universal wired USB (HID) key
 
 It is particularly useful for the Apple Wireless keyboards because it can translate their exotic keymap to that of a standard USB PC keyboard. This an easy way to get an Apple keyboard to seamlessly and fully work on a Windows PC (or any other device that is not an Apple computer) without the need to install any software or special drivers on it.
 
-![raspikey-diagram.png](images/raspikey-diagram.png)
+![raspikey-diagram](images/raspikey-diagram.png)
 
 Features
 --------
