@@ -21,10 +21,10 @@ Features
 Screenshots
 -----------
 
-<a><img width="100" height="100" src="images/shot1_tn.png" href="images/shot1.png"></a>
-<a><img width="100" height="100" src="images/shot2_tn.png" href="images/shot2.png"></a>
-<a><img width="100" height="100" src="images/shot3_tn.png" href="images/shot3.png"></a>
-<a><img width="100" height="100" src="images/shot4_tn.jpg" href="images/shot4.jpg"></a>
+<a href="images/shot1.png"><img width="100" height="100" src="images/shot1_tn.png"></a>
+<a href="images/shot2.png"><img width="100" height="100" src="images/shot2_tn.png"></a>
+<a href="images/shot3.png"><img width="100" height="100" src="images/shot3_tn.png"></a>
+<a href="images/shot4.jpg"><img width="100" height="100" src="images/shot4_tn.jpg"></a>
 
 
 Hardware and Software Requirements
