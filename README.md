@@ -1,9 +1,9 @@
 ![raspikey-logo](images/raspikey-logo.png)
 ###### Universal Bluetooth to USB HID Adapter
 
-RaspiKey converts a bluetooth keyboard device to a universal wired USB (HID) keyboard device. RaspiKey is software that runs on the [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) board.
+RaspiKey converts any bluetooth keyboard to a universal wired USB (HID) keyboard. RaspiKey is software that runs on the [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) board.
 
-It is particularly useful for the Apple Wireless keyboards because it can translate their exotic keymap to that of a standard USB PC keyboard. This an easy way to get an Apple keyboard to seamlessly and fully work on a Windows PC (or any other device that is not an Apple computer) without the need to install any software or special drivers on it.
+It is particularly useful for the Apple Wireless keyboards because it can translate their exotic keymap to that of a standard USB PC keyboard. This an easy way to get them to seamlessly work on a Windows PC (or any other device that is not an Apple computer), without the need to install custom software or special drivers on it.
 
 ![raspikey-diagram](images/raspikey-diagram.png)
 
@@ -29,9 +29,9 @@ Screenshots
 Hardware and Software Requirements
 ----------------------------------
 
-*   You need a [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) device. The cheapest Zero W model (which is the one you need) currently sells for $10.
-*   You then need a cheap 2GB (or more) micro-SD card to burn the RaspiKey software on.
-*   You need access to a modern Windows PC with the Chrome browser to tether a keyboard to the Raspberry Pi board for the first time. You can then use the Raspberry Pi board and your keyboard on anything that has a USB keyboard port.
+*   A [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) device. The cheapest Zero W model (which is the one you need) currently sells for $10.
+*   A cheap 2GB micro-SD card to burn the RaspiKey software on.
+*   Access to a modern Windows PC with the Chrome browser to tether a keyboard to the Raspberry Pi board for the first time. You can then use the Raspberry Pi board and your keyboard on anything that has a USB keyboard port.
 
 Installation and Use
 --------------------
