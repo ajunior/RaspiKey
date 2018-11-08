@@ -45,7 +45,7 @@ Installation and Use
 
 BETA License
 -------
-RaspiKey is currently in BETA. Unless licensed, it will run for 30 minutes and then turn off automatically. If you would like a permanent license for testing please e-mail me and I'll be happy to send you one.
+RaspiKey is currently in BETA. Unless licensed, it will run for 30 minutes and then turn off automatically. If you would like a permanent license for testing please [e-mail me](https://github.com/samartzidis/RaspiKey) and I'll be happy to send you one.
 
 Known Issues
 ------------
