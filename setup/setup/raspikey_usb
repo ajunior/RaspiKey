@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# Description: usb_gadget configuration script for raspikey_usb device
+#
+# Installation:
+#	Place into /usr/sbin/raspikey_usb and then edit /etc/rc.local and add the following line just before the last line containing "exit 0":
+#	/usr/sbin/raspikey_usb
+#
+
+if [ -d "/sys/kernel/config/usb_gadget/raspikey" ]
+then
+  exit 0
+fi
+
+cd /sys/kernel/config/usb_gadget/
+mkdir -p raspikey
+cd raspikey
+
+echo 0x1d6b > idVendor # Linux Foundation
+echo 0x0104 > idProduct # Multifunction Composite Gadget
+echo 0x0100 > bcdDevice # v1.0.0
+echo 0x0200 > bcdUSB # USB2
+
+#Extras needed for RNDIS interface to function properly on Windows
+echo 0xEF > bDeviceClass # Composite class
+echo 0x02 > bDeviceSubClass # Composite subclass
+echo 0x01 > bDeviceProtocol # Composite protocol
+
+mkdir -p strings/0x409
+echo "0920a1ec-344c-48c8-81d8-00d8f7f1ed74" > strings/0x409/serialnumber
+echo "George Samartzidis" > strings/0x409/manufacturer
+echo "RaspiKey USB Device" > strings/0x409/product
+
+mkdir -p configs/c.1/strings/0x409
+echo "Config 1: ECM network" > configs/c.1/strings/0x409/configuration
+echo 250 > configs/c.1/MaxPower
+
+
+# RNDIS has to be the *FIRST* interface on the composite device
+#
+mkdir -p os_desc
+echo 1       > os_desc/use
+echo 0xcd    > os_desc/b_vendor_code
+echo MSFT100 > os_desc/qw_sign
+mkdir -p functions/rndis.usb0  # network
+echo RNDIS   > functions/rndis.usb0/os_desc/interface.rndis/compatible_id
+echo 5162001 > functions/rndis.usb0/os_desc/interface.rndis/sub_compatible_id
+echo "42:63:65:13:34:56" > functions/rndis.usb0/host_addr
+echo "42:63:65:66:43:21" > functions/rndis.usb0/dev_addr
+ln -s functions/rndis.usb0 configs/c.1/
+ln -s configs/c.1 os_desc
+
+# Add HID keyboard interface
+#
+mkdir -p functions/hid.usb0
+echo 1 > functions/hid.usb0/protocol
+echo 1 > functions/hid.usb0/subclass
+echo 9 > functions/hid.usb0/report_length
+echo -ne \\x05\\x01\\x09\\x06\\xa1\\x01\\x85\\x01\\x05\\x07\\x19\\xe0\\x29\\xe7\\x15\\x00\\x25\\x01\\x75\\x01\\x95\\x08\\x81\\x02\\x95\\x01\\x75\\x08\\x81\\x03\\x95\\x05\\x75\\x01\\x05\\x08\\x19\\x01\\x29\\x05\\x91\\x02\\x95\\x01\\x75\\x03\\x91\\x03\\x95\\x06\\x75\\x08\\x15\\x00\\x25\\x65\\x05\\x07\\x19\\x00\\x29\\x65\\x81\\x00\\xc0\\x05\\x0C\\x09\\x01\\xA1\\x01\\x85\\x02\\x05\\x0C\\x15\\x00\\x25\\x01\\x75\\x01\\x95\\x07\\x09\\xB5\\x09\\xB6\\x09\\xB7\\x09\\xCD\\x09\\xE2\\x09\\xE9\\x09\\xEA\\x81\\x02\\x95\\x01\\x81\\x01\\xC0 > functions/hid.usb0/report_desc
+ln -s functions/hid.usb0 configs/c.1/
+
+# Add serial console interface
+# (also requires: systemctl enable getty@ttyGS0.service)
+#
+#mkdir -p functions/acm.usb0    # serial
+#ln -s functions/acm.usb0 configs/c.1/
+
+
+udevadm settle -t 5 || :
+ls /sys/class/udc > UDC

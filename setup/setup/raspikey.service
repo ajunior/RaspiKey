@@ -1,0 +1,19 @@
+# File: /etc/systemd/system/raspikey.service
+# systemd configuration of RaspiKey service
+#
+
+[Unit]
+Description=RaspiKey Keyboard HID Device Service
+
+[Service]
+ExecStart=/raspikey/raspikey
+WorkingDirectory=/raspikey/
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+CPUSchedulingPolicy=fifo
+CPUSchedulingPriority=1
+
+[Install]
+WantedBy=multi-user.target

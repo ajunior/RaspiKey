@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+div.mdl-layout__drawer > nav.mdl-navigation > a.mdl-navigation__link {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+
+

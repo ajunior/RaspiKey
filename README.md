@@ -43,9 +43,6 @@ Installation and Use
 5.  Insert the micro-SD card to the “Raspberry Pi Zero W” and then connect it to the computer using just the middle micro-USB port (labelled “USB” with tiny white letters). The Raspberry Pi will both draw power from this port as well as use it to communicate with the PC.
 6.  Wait about 10 seconds. Then open Chrome on Windows at the address: **[http://raspikey.local](http://raspikey.local)**. You should then be able to use the RaspiKey configuration page.
 
-BETA License
--------
-RaspiKey is currently in BETA. Unless licensed, it will run for 30 minutes and then turn off automatically. If you would like a permanent license for testing please [e-mail me](https://github.com/samartzidis) and I'll be happy to send you one.
 
 Known Issues
 ------------

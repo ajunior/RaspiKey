@@ -1,0 +1,12 @@
+[Unit]
+Description=Raspikey data partition restoration service
+Before=basic.target
+After=local-fs.target sysinit.target
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c "[ ! -f /boot/data.tar.bz2 ] || /bin/tar xvf /boot/data.tar.bz2 -C /data ."
+
+[Install]
+WantedBy=basic.target

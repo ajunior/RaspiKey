@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{6a2ff0cb-ed47-47af-a850-3d8587c55a4d}</ProjectGuid>
+    <Keyword>Linux</Keyword>
+    <RootNamespace>AppleHidBridge</RootNamespace>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <ApplicationType>Linux</ApplicationType>
+    <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
+    <TargetLinuxPlatform>Generic</TargetLinuxPlatform>
+    <LinuxProjectType>{D51BCBC9-82E9-4017-911E-C93873C4EA2B}</LinuxProjectType>
+    <ProjectName>raspikey</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <TargetName>raspikey</TargetName>
+    <TargetExt />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <TargetName>raspikey</TargetName>
+    <TargetExt />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>raspikey</TargetName>
+    <TargetExt />
+    <AdditionalSourcesToCopyMapping>
+    </AdditionalSourcesToCopyMapping>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetName>raspikey</TargetName>
+    <TargetExt />
+    <AdditionalSourcesToCopyMapping>
+    </AdditionalSourcesToCopyMapping>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="A1314.cpp" />
+    <ClCompile Include="A1644.cpp" />
+    <ClCompile Include="bluetooth\bt.cpp" />
+    <ClCompile Include="bluetooth\agent.cpp" />
+    <ClCompile Include="gdbus\client.c" />
+    <ClCompile Include="gdbus\mainloop.c" />
+    <ClCompile Include="gdbus\object.c" />
+    <ClCompile Include="gdbus\polkit.c" />
+    <ClCompile Include="gdbus\watch.c" />
+    <ClCompile Include="GenericReportFilter.cpp" />
+    <ClCompile Include="Globals.cpp" />
+    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="WebApiServer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="A1314.h" />
+    <ClInclude Include="A1644.h" />
+    <ClInclude Include="bluetooth\bt.h" />
+    <ClInclude Include="bluetooth\agent.h" />
+    <ClInclude Include="crow_all.h" />
+    <ClInclude Include="fifo_map.hpp" />
+    <ClInclude Include="gdbus\gdbus.h" />
+    <ClInclude Include="GenericReportFilter.h" />
+    <ClInclude Include="Globals.h" />
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="Logger.h" />
+    <ClInclude Include="Main.h" />
+    <ClInclude Include="ReportFilter.h" />
+    <ClInclude Include="WebApiServer.h" />
+  </ItemGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <ClCompile>
+      <PreprocessorDefinitions>USE_LIBCRYPTO</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);/home/pi/projects/bluez-5.43;/usr/include/dbus-1.0;/usr/lib/arm-linux-gnueabihf/dbus-1.0/include;/usr/include/glib-2.0;/usr/lib/arm-linux-gnueabihf/glib-2.0/include</AdditionalIncludeDirectories>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(StlAdditionalDependencies);%(AdditionalDependencies);/usr/lib/arm-linux-gnueabihf/libboost_system.a</AdditionalDependencies>
+      <LibraryDependencies>crypto;pthread;m;glib-2.0;dbus-1</LibraryDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>USE_LIBCRYPTO;PLATFORM_X64</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);/usr/include/dbus-1.0;/usr/lib/x86_64-linux-gnu/dbus-1.0/include;/usr/include/glib-2.0;/usr/lib/x86_64-linux-gnu/glib-2.0/include</AdditionalIncludeDirectories>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(StlAdditionalDependencies);%(AdditionalDependencies);/usr/lib/x86_64-linux-gnu/libboost_system.a</AdditionalDependencies>
+      <LibraryDependencies>crypto;pthread;m;glib-2.0;dbus-1</LibraryDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PreBuildEvent>
+      <AdditionalSourcesToCopyMapping>
+      </AdditionalSourcesToCopyMapping>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);USE_LIBCRYPTO</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);/home/pi/projects/bluez-5.43;/usr/include/dbus-1.0;/usr/lib/arm-linux-gnueabihf/dbus-1.0/include;/usr/include/glib-2.0;/usr/lib/arm-linux-gnueabihf/glib-2.0/include</AdditionalIncludeDirectories>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>crypto;pthread;m;glib-2.0;dbus-1</LibraryDependencies>
+      <AdditionalDependencies>$(StlAdditionalDependencies);%(AdditionalDependencies);/usr/lib/arm-linux-gnueabihf/libboost_system.a</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <RemotePostBuildEvent>
+      <Command>
+      </Command>
+    </RemotePostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);USE_LIBCRYPTO;PLATFORM_X64</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);/usr/include/dbus-1.0;/usr/lib/x86_64-linux-gnu/dbus-1.0/include;/usr/include/glib-2.0;/usr/lib/x86_64-linux-gnu/glib-2.0/include</AdditionalIncludeDirectories>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>crypto;pthread;m;glib-2.0;dbus-1</LibraryDependencies>
+      <AdditionalDependencies>$(StlAdditionalDependencies);%(AdditionalDependencies);/usr/lib/x86_64-linux-gnu/libboost_system.a</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <RemotePostBuildEvent>
+      <Command>
+      </Command>
+    </RemotePostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+  <!--
+  <Target Name="Publish-Setup" Condition="'$(Platform)'=='ARM'" AfterTargets="AfterBuild">
+    <PropertyGroup>
+      <TargetDir>$(SolutionDir)\RaspiKeySetup\setup\</TargetDir>
+    </PropertyGroup>
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(TargetDir)\" SkipUnchangedFiles="true" />
+  </Target>
+  -->
+</Project>

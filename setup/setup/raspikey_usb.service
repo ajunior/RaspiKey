@@ -1,0 +1,9 @@
+[Unit]
+Description=raspikey_usb service
+
+[Service]
+ExecStart=/usr/sbin/raspikey_usb
+User=root
+
+[Install]
+WantedBy=multi-user.target
