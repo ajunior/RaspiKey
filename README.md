@@ -1,5 +1,5 @@
 ![raspikey-logo](images/raspikey-logo.png)
-###### Universal Bluetooth to USB HID Keyboard Adapter
+###### Universal Bluetooth to USB Keyboard Adapter
 
 RaspiKey converts any bluetooth keyboard to a universal wired USB (HID) keyboard. RaspiKey is software that runs on the [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) board.
 
@@ -29,19 +29,19 @@ Screenshots
 Hardware and Software Requirements
 ----------------------------------
 
-*   A [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) device. The cheapest Zero W model (which is the one you need) currently sells for $10.
-*   A cheap 2GB micro-SD card to burn the RaspiKey software on.
+*   A [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) device.
+*   A cheap 2GB micro-SD card.
 *   Access to a modern Windows PC with the Chrome browser to tether a keyboard to the Raspberry Pi board for the first time. You can then use the Raspberry Pi board and your keyboard on anything that has a USB keyboard port.
 
-Installation and Use
+Installation
 --------------------
 
-1.  Download [Apple Bonjour](https://developer.apple.com/bonjour/) and install it to Windows. The latest 32-bit and 64-bit versions are available [here](https://github.com/samartzidis/RaspiKey/tree/master/utilities).
-2.  Download the latest RaspiKey **raspikey.xz** file from [here](https://github.com/samartzidis/RaspiKey/releases).
-3.  Download [Etcher](https://etcher.io/).
-4.  Use Etcher on Windows to burn raspikey.xz to a 2GB (if bigger doesn’t matter) micro-SD card.
-5.  Insert the micro-SD card to the “Raspberry Pi Zero W” and then connect it to the computer using just the middle micro-USB port (labelled “USB” with tiny white letters). The Raspberry Pi will both draw power from this port as well as use it to communicate with the PC.
-6.  Wait about 10 seconds. Then open Chrome on Windows at the address: **[http://raspikey.local](http://raspikey.local)**. You should then be able to use the RaspiKey configuration page.
+1. Download [Apple Bonjour](https://developer.apple.com/bonjour/) and install it to Windows. The latest 32-bit and 64-bit versions are available [here](https://github.com/samartzidis/RaspiKey/tree/master/utilities).
+2. Download the latest RaspiKey release file **raspikey.xz**.
+3. Download [Etcher](https://etcher.io/).
+4. Use Etcher on Windows to burn raspikey.xz to a 2GB (if bigger doesn’t matter) micro-SD card.
+5. Insert the micro-SD card to the “Raspberry Pi Zero W” and then connect it to the computer using just the middle micro-USB port (labelled “USB” with tiny white letters). The Raspberry Pi will both draw power from this port as well as use it to communicate with the PC.
+6. Wait about 10 seconds. Then open Chrome on Windows at the address: **[http://raspikey.local](http://raspikey.local)**. You should then be able to use the RaspiKey configuration page.
 
 
 Known Issues
