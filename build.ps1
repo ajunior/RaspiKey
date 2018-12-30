@@ -9,6 +9,7 @@ Set-Location raspikey
 Set-Location ..
 
 Set-Location raspikey-ui
+yarn install
 yarn build
 Set-Location ..
 
