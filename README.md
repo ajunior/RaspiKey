@@ -29,19 +29,28 @@ Screenshots
 Hardware and Software Requirements
 ----------------------------------
 
-*   A [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) device.
-*   A cheap 2GB micro-SD card.
-*   Access to a modern Windows PC with the Chrome browser to tether a keyboard to the Raspberry Pi board for the first time. You can then use the Raspberry Pi board and your keyboard on anything that has a USB keyboard port.
+1. A plain [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) board.
+2. A 2GB micro SD card.
+3. Access to a modern Windows PC with the Chrome browser. You need this to build your new RaspiKey device and tether a Bluetooth keyboard to it for the first time.
 
-Installation
---------------------
+Building your new RaspiKey device
+---------------------------------
 
-1. Download [Apple Bonjour](https://developer.apple.com/bonjour/) and install it to Windows. The latest 32-bit and 64-bit versions are available [here](https://github.com/samartzidis/RaspiKey/tree/master/utilities).
-2. Download the latest RaspiKey release file **raspikey.xz**.
-3. Download [Etcher](https://etcher.io/).
-4. Use Etcher on Windows to burn raspikey.xz to a 2GB (if bigger doesn’t matter) micro-SD card.
-5. Insert the micro-SD card to the “Raspberry Pi Zero W” and then connect it to the computer using just the middle micro-USB port (labelled “USB” with tiny white letters). The Raspberry Pi will both draw power from this port as well as use it to communicate with the PC.
-6. Wait about 10 seconds. Then open Chrome on Windows at the address: **[http://raspikey.local](http://raspikey.local)**. You should then be able to use the RaspiKey configuration page.
+1. Provided you have your new RaspiKey board mentioned in the previous step.
+2. Download [Apple Bonjour](https://developer.apple.com/bonjour/) and install it on Windows. The latest 32-bit and 64-bit versions are available [here](https://github.com/samartzidis/RaspiKey/tree/master/utilities).
+3. Download and install [Etcher](https://etcher.io/).
+4. Download the latest RaspiKey release **raspikey.zip** and the latest Raspbian headless release **...-raspbian-stretch-lite-headless.xz** from [here](https://github.com/samartzidis/RaspiKey/releases).
+5. Run Etcher to write the **...-raspbian-stretch-lite-headless.xz** image to the SD card.
+6. Open the downloaded **raspikey.zip** file and copy all of its contents (setup, start.sh) directly to the the SD card. The SD card should appear on Windows as a drive named **boot**.
+7. Now insert the SD card to the “Raspberry Pi Zero W” device and connect it to the PC using just the middle micro-USB port (labelled “USB” with tiny white letters). The Raspberry Pi will both draw power from this port as well as use it to communicate with the PC.
+8. The Pi will boot and continue the setup. This process should last about 2-3 minutes. You will be able to tell when it's finished after the Raspberry Pi's green led permanently stops flashing. Once that happens, unplug it from the PC's USB port.
+9. Your new RaspiKey device is now fully configured and ready to use.
+
+RaspiKey Usage
+--------------
+1. Plug RaspiKey to a PC.
+2. Wait for about 10 seconds for it to stat and open Chrome at **[http://raspikey.local](http://raspikey.local)**. 
+3. You should now be able to use the configuration page to discover and tether your Bluetooth keyboard to it. Once the keyboard is discovered and tethered, it will be usable on this PC directly or anythere else you plug RaspiKey to. You do not need to reconfigure it.
 
 
 Known Issues
