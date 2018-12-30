@@ -123,7 +123,7 @@ Planned Futures
 *   Support for multiple Bluetooth keyboards connected in parallel.
 
 ---
-RaspiKey is free and open-source software. If you found this software useful and you use it on a daily basis, please consider donating so that I can keep adding new features:
+RaspiKey is a free and open-source software effort. If you like it and found it useful, please consider donating
 
 [![donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TBM5P9X6GZRCL)
 
