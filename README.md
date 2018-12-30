@@ -50,7 +50,7 @@ RaspiKey Usage
 --------------
 1. Plug RaspiKey to a PC.
 2. Wait for about 10 seconds for it to stat and open Chrome at **[http://raspikey.local](http://raspikey.local)**. 
-3. You should now be able to use the configuration page to discover and tether your Bluetooth keyboard to it. Once the keyboard is discovered and tethered, it will be usable on this PC directly or anythere else you plug RaspiKey to. You do not need to reconfigure it.
+3. You should now be able to use the configuration page to discover and tether your Bluetooth keyboard to it. Once the keyboard is discovered and tethered, it will be usable on this PC directly or on anywhere else you plug RaspiKey to. You do not need to reconfigure RaspiKey to plug it in and use it elsewhere.
 
 
 Known Issues
