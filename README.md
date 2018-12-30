@@ -1,21 +1,21 @@
 ![raspikey-logo](images/raspikey-logo.png)
-###### Universal Bluetooth to USB Keyboard Adapter
+###### Apple and Universal Bluetooth to USB Keyboard Adapter
 
-RaspiKey converts any bluetooth keyboard to a universal wired USB (HID) keyboard. RaspiKey is software that runs on the [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) board.
+RaspiKey is an adaptor (bridge) that converts a bluetooth keyboard to a wired USB keyboard. RaspiKey runs on the [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) board.
 
-It is particularly useful for the Apple Wireless keyboards because it can translate their exotic keymap to that of a standard USB PC keyboard. This an easy way to get them to seamlessly and fully work on a Windows PC (or any other device that is not an Apple computer), without the need to install software on it.
+RaspiKey is particularly useful with the **Apple Wireless** keyboards family because it can translate their exotic keymap to that of a **standard PC keyboard** and make them fully usable on a PC or other devices (TVs, game consoles, etc.).
 
 ![raspikey-diagram](images/raspikey-diagram.png)
 
 Features
 --------
 
-*   RaspiKey can host **any bluetooth keyboard** but it currently offers full keyboard compatibility (e.g. special multimedia keys support) only for the Apple Wireless (A1314) and the Apple Magic (A1644) keyboard models.
-*   **Zero PC software footprint**. It does not require any driver installation or specific software installation on your PC that uses a connected keyboard.
-*   **Self-consistent**. It does not require external power. It is self-powered through the PC USB port.
-*   It is **inherently secure**. As it is a hardware device, there is no software driver running on your PC that can be hacked or compromised compared to a software driver solution.
-*   RaspiKey **can be used on anything**; on any device that accepts a standard USB keyboard, not just on Windows PCs. This means that you can connect your Apple keyboard to your smart TV or your game console with full keyboard functionality.
-*   It is robust and responsive. It is based on a cut-down, readonly OS runtime version of the official Raspbian Linux. There is no shutdown process, you just unplug the device when you want. The custom software is implemented 100% in C & C++ and runs in the real-time kernel scheduler policy. 
+* RaspiKey can host **any bluetooth keyboard** but it currently offers full keyboard compatibility (e.g. special multimedia keys support) only for the Apple Wireless (A1314) and the Apple Magic (A1644) keyboard models.
+* **Zero PC software footprint**. It does not require any driver installation or specific software installation on your PC that uses a connected keyboard.
+* **Self-consistent**. It does not require external power. It is self-powered through the PC USB port.
+* It is **inherently secure**. As it is a hardware device, there is no software driver running on your PC that can be hacked, intercepted or compromised compared to a software solution. You even have **full access to the source code** to examine what it does or even build it yourself.
+* RaspiKey **can be used on anything**; on any device that accepts a standard USB keyboard, not just on Windows PCs. This means that you can connect your Apple keyboard to your smart TV or your game console with full keyboard functionality.
+* It is **robust and responsive**, based on a cut-down, readonly version of the official Raspbian Linux. Even thoiugh it runs an OS internally, there is no need of a shutdown process, you just unplug it when you want.
 
 Screenshots
 -----------
@@ -43,7 +43,7 @@ Building your new RaspiKey device
 5. Run Etcher to write the **...-raspbian-stretch-lite-headless.xz** image to the SD card.
 6. Open the downloaded **raspikey.zip** file and copy all of its contents (setup, start.sh) directly to the the SD card. The SD card should appear on Windows as a drive named **boot**.
 7. Now insert the SD card to the “Raspberry Pi Zero W” device and connect it to the PC using just the middle micro-USB port (labelled “USB” with tiny white letters). The Raspberry Pi will both draw power from this port as well as use it to communicate with the PC.
-8. The Pi will boot and continue the setup. This process should last about 2-3 minutes. You will be able to tell when it's finished after the Raspberry Pi's green led permanently stops flashing. Once that happens, unplug it from the PC's USB port.
+8. The Pi will boot and continue the setup. This process should last about 3-4 minutes. You will be able to tell when it's finished after the Raspberry Pi's green led permanently stops flashing. Once that happens, unplug it from the PC's USB port.
 9. Your new RaspiKey device is now fully configured and ready to use.
 
 RaspiKey Usage
@@ -122,5 +122,11 @@ Planned Futures
 *   Support for multimedia or special key functions for more Bluetooth keyboards.
 *   Support for multiple Bluetooth keyboards connected in parallel.
 
+---
+RaspiKey is free and open-source software. If you found this software useful and you use it on a daily basis, please consider donating so that I can keep adding new features:
 
-<a href="https://github.com/samartzidis/RaspiKey"><img align="right" src="images/github-small.png"/></a>
+[![donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TBM5P9X6GZRCL)
+
+---
+
+<a href="https://github.com/samartzidis/RaspiKey"><img src="images/github-small.png"/></a>
