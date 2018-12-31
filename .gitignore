@@ -2,4 +2,4 @@
 ./**/obj
 ./**/node_modules
 ./**/*.csproj.user
-.vs
+./**/.vs
