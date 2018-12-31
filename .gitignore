@@ -1,5 +1,5 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/raspikey/.vs/RaspiKey/v15/.suo
+﻿./**/bin
+./**/obj
+./**/node_modules
+./**/*.csproj.user
+.vs
