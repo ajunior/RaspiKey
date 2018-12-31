@@ -106,12 +106,12 @@ void PollDevicesLoop()
 		IReportFilter* prp;
 		if (fds.appleKbInputEventDevName == A1644_DEV_NAME)
 		{
-			InfoMsg("Using A1644 report processor");
+			InfoMsg("Using A1644 report filter");
 			prp = new A1644();
 		}
 		else if (fds.appleKbInputEventDevName == A1314_DEV_NAME)
 		{
-			InfoMsg("Using A1314 report processor");
+			InfoMsg("Using A1314 report filter");
 			prp = new A1314();
 		}
 		else
@@ -119,7 +119,7 @@ void PollDevicesLoop()
 			//ErrorMsg("Unexpected device %s", fds.appleKbInputEventDevName.c_str());
 			//sleep(1);
 			//continue;
-			InfoMsg("Using GENERIC report processor");
+			InfoMsg("Using Generic report filter");
 			prp = new GenericReportFilter();
 		}
 

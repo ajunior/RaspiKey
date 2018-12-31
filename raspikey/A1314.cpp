@@ -44,5 +44,5 @@ size_t A1314::ProcessOutputReport(uint8_t* buf, size_t len)
 	if (len != sizeof(Globals::HidgOutputReport))
 		return 0;
 
-	return static_cast<int>(len);
+	return len;
 }
