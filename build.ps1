@@ -23,10 +23,11 @@ try
     }
 
     Set-Location $PSScriptRoot
+    New-Item -ItemType Directory -Force -Path .\build
     Copy-Item -Force -Path .\raspikey\bin\$platform\$configuration\raspikey .\setup\setup
     Copy-Item -Recurse -Force -Path .\raspikey-ui\build .\setup\setup\html
 
-    Compress-Archive -CompressionLevel Optimal -Path .\setup\* raspikey.zip
+    Compress-Archive -CompressionLevel Optimal -Path .\setup\* .\build\raspikey.zip
 }
 finally
 {
