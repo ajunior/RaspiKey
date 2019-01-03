@@ -1,7 +1,7 @@
 ![raspikey-logo](images/raspikey-logo.png)
 ###### Bluetooth to USB Keyboard Adapter
 
-RaspiKey is an adapter that converts a bluetooth keyboard to a wired USB keyboard. It is particularly useful with the **Apple Wireless** keyboards family because it translates their exotic keymap to that of a **standard PC keyboard** and makes them fully usable on a PC or on other devices (TVs, game consoles, etc.).
+RaspiKey is an adapter that converts a bluetooth keyboard to a wired USB keyboard. It is particularly useful with the **Apple Wireless** keyboards family because it translates their exotic keymap to that of a **standard PC keyboard** and makes them fully usable on a Windows PC or on other devices (TVs, game consoles, etc.).
 
 RaspiKey requires a [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) board.
 
