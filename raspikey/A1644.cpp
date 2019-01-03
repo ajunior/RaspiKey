@@ -1,3 +1,9 @@
+//
+// RaspiKey Copyright (c) 2019 George Samartzidis <samartzidis@gmail.com>. All rights reserved.
+// You are not allowed to redistribute, modify or sell any part of this file in either 
+// compiled or non-compiled form without the author's written permission.
+//
+
 #include "A1644.h"
 #include <iostream> 
 #include "Globals.h"
@@ -8,11 +14,9 @@ A1644::A1644()
 {
 }
 
-
 A1644::~A1644()
 {
 }
-
 
 size_t A1644::ProcessInputReport(uint8_t* buf, size_t len)
 {

@@ -1,6 +1,10 @@
+//
+// RaspiKey Copyright (c) 2019 George Samartzidis <samartzidis@gmail.com>. All rights reserved.
+// You are not allowed to redistribute, modify or sell any part of this file in either 
+// compiled or non-compiled form without the author's written permission.
+//
+
 #include "GenericReportFilter.h"
-
-
 
 GenericReportFilter::GenericReportFilter()
 {
