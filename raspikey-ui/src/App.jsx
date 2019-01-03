@@ -261,7 +261,7 @@ class App extends Component {
                 <br />
 
                 <Typography align="left">
-                    <i>RaspiKey v{this.state.version}. Copyright &copy;2018, All Rights Reserved.</i>
+                    <i>RaspiKey v{this.state.version}. Copyright &copy;2019 George Samartzidis, All Rights Reserved.</i>
                 </Typography>
             </div>
         );
