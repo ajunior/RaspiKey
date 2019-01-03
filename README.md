@@ -33,7 +33,7 @@ Hardware and Software Requirements
 2. A 2GB micro SD card.
 3. Access to a modern Windows PC with the Chrome browser. You need this to build your new RaspiKey device and tether a Bluetooth keyboard to it for the first time.
 
-Building a new RaspiKey device
+Building a new RaspiKey Device
 ---------------------------------
 
 1. Download [Apple Bonjour](https://developer.apple.com/bonjour/) and install it on Windows. The latest 32-bit and 64-bit versions are available [here](https://github.com/samartzidis/RaspiKey/tree/master/utilities).
@@ -41,7 +41,7 @@ Building a new RaspiKey device
 3. Download the latest RaspiKey release **raspikey.zip** and the latest Raspbian headless release **...-raspbian-stretch-lite-headless.xz** from [here](https://github.com/samartzidis/RaspiKey/releases).
 4. Run Etcher to write the **...-raspbian-stretch-lite-headless.xz** image to the SD card.
 5. Open the downloaded **raspikey.zip** file and copy all of its contents (setup, start.sh) directly to the the SD card. The SD card should appear on Windows as a drive named **boot**.
-6. Now insert the SD card to the “Raspberry Pi Zero W” device and connect it to the PC using just the middle micro-USB port (labelled “USB” with tiny white letters). The Raspberry Pi will both draw power from this port as well as use it to communicate with the PC.
+6. Now insert the SD card to the “Raspberry Pi Zero W” device and connect it to the PC using just the middle micro-USB port (labelled “USB” in tiny white letters). The Raspberry Pi will both draw power from this port as well as use it to communicate with the PC.
 7. The Pi will boot and continue the setup. This process should last about 3-4 minutes. You will be able to tell when it's finished after the Raspberry Pi's green led permanently stops flashing. Once that happens, unplug it from the PC's USB port.
 8. Your new RaspiKey device is now fully configured and ready to use.
 
