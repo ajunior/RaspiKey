@@ -14,6 +14,26 @@
 #include "crow_all.h"
 #pragma GCC diagnostic pop   
 
+struct CustomMiddleware
+{
+	CustomMiddleware()
+	{
+	}
+
+	struct context
+	{
+	};
+
+	void before_handle(crow::request& req, crow::response& res, context& ctx)
+	{
+	}
+
+	void after_handle(crow::request& req, crow::response& res, context& ctx)
+	{
+		res.add_header("Access-Control-Allow-Origin", "*");
+	}
+};
+
 class WebApiServer
 {
 public:
@@ -22,7 +42,7 @@ public:
 
 private:
 	std::thread* m_pMainThread;
-	crow::SimpleApp m_app;
+	crow::App<CustomMiddleware> m_crowApp;
 
 private:
 	void MainThread();
@@ -32,4 +52,5 @@ public:
 	void Start();
 	void Stop();
 };
+
 

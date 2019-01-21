@@ -7,9 +7,6 @@
 #include "WebApiServer.h"
 #include <thread>
 #include <chrono>
-#include <unistd.h>
-#include <iostream>
-#include <stdlib.h>
 #include "bluetooth/bt.h"
 #include "Globals.h"
 #include "Logger.h"
@@ -32,9 +29,7 @@ WebApiServer::~WebApiServer()
 
 void WebApiServer::MainThread()
 {
-	m_app
-		.port(80)
-		.run();
+	m_crowApp.port(80).run();
 
 	m_pMainThread = nullptr;
 }
@@ -49,7 +44,7 @@ void WebApiServer::Start()
 
 void WebApiServer::Stop()
 {
-	m_app.stop();
+	m_crowApp.stop();
 
 	m_pMainThread->join();
 	delete m_pMainThread;
@@ -58,14 +53,14 @@ void WebApiServer::Stop()
 
 void WebApiServer::BuildRoutes()
 {
-	CROW_ROUTE(m_app, "/") ([](const crow::request& req, crow::response& res)
+	CROW_ROUTE(m_crowApp, "/") ([](const crow::request& req, crow::response& res)
 	{
 		res.code = 302;
 		res.set_header("Location", "html/index.html");
 		res.end();
 	});
 
-	CROW_ROUTE(m_app, "/html/<path>")
+	CROW_ROUTE(m_crowApp, "/html/<path>")
 		([](string path)
 	{
 		string fullPath = Globals::FormatString("%s/html/%s", Globals::g_szModuleDir, path.c_str());		
@@ -98,7 +93,7 @@ void WebApiServer::BuildRoutes()
 		}
 	});
 
-	CROW_ROUTE(m_app, "/save-data")
+	CROW_ROUTE(m_crowApp, "/save-data")
 		([]()
 	{
 		int retval = system("/bin/mount -o remount,rw /boot && /bin/tar cpjf /boot/data.tar.bz2 -C /data . && /bin/mount -o remount,ro /boot");
@@ -108,7 +103,7 @@ void WebApiServer::BuildRoutes()
 		return crow::response(200, "{}");
 	});
 
-	CROW_ROUTE(m_app, "/delete-data")
+	CROW_ROUTE(m_crowApp, "/delete-data")
 		([]()
 	{
 
@@ -127,7 +122,7 @@ void WebApiServer::BuildRoutes()
 		return crow::response(200, "{}");
 	});
 
-	CROW_ROUTE(m_app, "/info")
+	CROW_ROUTE(m_crowApp, "/info")
 		([]()
 	{
 		nlohmann::json jobj;
@@ -137,7 +132,7 @@ void WebApiServer::BuildRoutes()
 		return crow::response(200, jobj.dump());
 	});
 
-	CROW_ROUTE(m_app, "/log")
+	CROW_ROUTE(m_crowApp, "/log")
 		([]()
 	{
 		string strLog;
@@ -154,7 +149,7 @@ void WebApiServer::BuildRoutes()
 		return crow::response(200, strLog);
 	});
 
-	CROW_ROUTE(m_app, "/bt")
+	CROW_ROUTE(m_crowApp, "/bt")
 		([](const crow::request& req)
 	{
 		char* val = req.url_params.get("v");
@@ -179,7 +174,7 @@ void WebApiServer::BuildRoutes()
 		return crow::response(200, "{}");
 	});
 
-	CROW_ROUTE(m_app, "/bt/discovery")
+	CROW_ROUTE(m_crowApp, "/bt/discovery")
 		([](const crow::request& req)
 	{
 		char* val = req.url_params.get("v");
@@ -208,7 +203,7 @@ void WebApiServer::BuildRoutes()
 		return crow::response(200, "{}");
 	});
 
-	CROW_ROUTE(m_app, "/bt/devices")
+	CROW_ROUTE(m_crowApp, "/bt/devices")
 		([]()
 	{
 		auto jarray = nlohmann::json::array();
@@ -246,7 +241,7 @@ void WebApiServer::BuildRoutes()
 	//	return crow::response(200, "{}");
 	//}
 
-	CROW_ROUTE(m_app, "/bt/info")
+	CROW_ROUTE(m_crowApp, "/bt/info")
 		([](const crow::request& req)
 	{
 		try
@@ -281,7 +276,7 @@ void WebApiServer::BuildRoutes()
 		}
 	});
 
-	CROW_ROUTE(m_app, "/bt/begin-pair")
+	CROW_ROUTE(m_crowApp, "/bt/begin-pair")
 		([](const crow::request& req)
 	{
 		try
@@ -305,7 +300,7 @@ void WebApiServer::BuildRoutes()
 		}
 	});
 
-	CROW_ROUTE(m_app, "/bt/end-pair")
+	CROW_ROUTE(m_crowApp, "/bt/end-pair")
 		([](const crow::request& req)
 	{
 		try
@@ -322,7 +317,7 @@ void WebApiServer::BuildRoutes()
 		}
 	});
 
-	CROW_ROUTE(m_app, "/bt/remove")
+	CROW_ROUTE(m_crowApp, "/bt/remove")
 		([](const crow::request& req)
 	{
 		char* val = req.url_params.get("v");
@@ -342,7 +337,7 @@ void WebApiServer::BuildRoutes()
 		return crow::response(200, "{}");
 	});
 
-	CROW_ROUTE(m_app, "/bt/connect")
+	CROW_ROUTE(m_crowApp, "/bt/connect")
 		([](const crow::request& req)
 	{
 		char* val = req.url_params.get("v");
@@ -362,7 +357,7 @@ void WebApiServer::BuildRoutes()
 		return crow::response(200, "{}");
 	});
 
-	CROW_ROUTE(m_app, "/bt/disconnect")
+	CROW_ROUTE(m_crowApp, "/bt/disconnect")
 		([](const crow::request& req)
 	{
 		char* val = req.url_params.get("v");
@@ -382,7 +377,7 @@ void WebApiServer::BuildRoutes()
 		return crow::response(200, "{}");
 	});
 
-	CROW_ROUTE(m_app, "/bt/trust")
+	CROW_ROUTE(m_crowApp, "/bt/trust")
 		([](const crow::request& req)
 	{
 		char* val = req.url_params.get("v");
