@@ -27,9 +27,8 @@
 
         <div class="md-body-2">Status:
           <span class="md-body-1" v-if="connected"><md-icon style="color: #14d100">usb</md-icon> Connected.</span>
-          <span class="md-body-1" v-if="!connected"><md-icon style="color: #d10000">usb</md-icon> Connecting...</span>
+          <span class="md-body-1" v-if="!connected"><md-icon>usb</md-icon> Connecting...</span>
         </div>
-        
 
         <div class="md-body-2">Version: <span class="md-body-1">{{ version }}</span></div>
         <div class="md-body-2">Uptime: <span class="md-body-1">{{ uptime }}</span></div>
@@ -41,7 +40,7 @@
       <div class="md-headline"><md-icon>keyboard</md-icon> Keyboards</div>      
       <div class="md-caption">View and manage discovered Bluetooth keyboards.</div>
 
-      <div class="device-cards">        
+      <div class="device-cards" v-if="connected">
         <DeviceCard v-for="device in devices" :key="device.address" :deviceData="device" :pairDeviceParent="pairDevice" :removeDeviceParent="removeDevice" :deviceDetailsParent="deviceDetails" :disabled="busy"/>
       </div>
 

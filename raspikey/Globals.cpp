@@ -27,21 +27,21 @@ namespace Globals
 	bool g_dwSwapAltCmd = false;
 	bool g_dwSwapFnCtrl = true;
 	char g_szModuleDir[PATH_MAX];
-	DevDesc g_devDesc[13] = { 
-		{0x05ac, 0x0208, ModelId::A1314},
-		{0x05ac, 0x0209, ModelId::A1314},
-		{0x05ac, 0x020a, ModelId::A1314},
-		{0x05ac, 0x022c, ModelId::A1314},
-		{0x05ac, 0x022d, ModelId::A1314},
-		{0x05ac, 0x022e, ModelId::A1314},
-		{0x05ac, 0x0239, ModelId::A1314},
-		{0x05ac, 0x023A, ModelId::A1314},
-		{0x05ac, 0x023B, ModelId::A1314},
-		{0x05ac, 0x0255, ModelId::A1314},
-		{0x05ac, 0x0256, ModelId::A1314},
-		{0x05ac, 0x0257, ModelId::A1314},
-		{0x004c, 0x0267, ModelId::A1644}
-	};
+	//DevDesc g_devDesc[13] = { 
+	//	{0x05ac, 0x0208, ModelId::A1314},
+	//	{0x05ac, 0x0209, ModelId::A1314},
+	//	{0x05ac, 0x020a, ModelId::A1314},
+	//	{0x05ac, 0x022c, ModelId::A1314},
+	//	{0x05ac, 0x022d, ModelId::A1314},
+	//	{0x05ac, 0x022e, ModelId::A1314},
+	//	{0x05ac, 0x0239, ModelId::A1314},
+	//	{0x05ac, 0x023A, ModelId::A1314},
+	//	{0x05ac, 0x023B, ModelId::A1314},
+	//	{0x05ac, 0x0255, ModelId::A1314},
+	//	{0x05ac, 0x0256, ModelId::A1314},
+	//	{0x05ac, 0x0257, ModelId::A1314},
+	//	{0x004c, 0x0267, ModelId::A1644}
+	//};
 
 	string FormatBuffer(const uint8_t* const buf, size_t len)
 	{
@@ -126,6 +126,7 @@ namespace Globals
 		return true;
 	}
 
+	/*
 	bool GetInputDeviceInfo(const char* const szDeviceName, int& vid, int& pid, ModelId& modelId)
 	{
 		ifstream ifs;
@@ -183,4 +184,5 @@ namespace Globals
 
 		return false;
 	}
+	*/
 }

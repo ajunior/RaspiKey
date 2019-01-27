@@ -14,6 +14,7 @@
 #include "crow_all.h"
 #pragma GCC diagnostic pop   
 
+#if !defined(NDEBUG) // DEBUG
 struct CustomMiddleware
 {
 	CustomMiddleware()
@@ -33,6 +34,7 @@ struct CustomMiddleware
 		res.add_header("Access-Control-Allow-Origin", "*");
 	}
 };
+#endif
 
 class WebApiServer
 {
@@ -42,7 +44,12 @@ public:
 
 private:
 	std::thread* m_pMainThread;
+
+#if !defined(NDEBUG) // DEBUG
 	crow::App<CustomMiddleware> m_crowApp;
+#else // RELEASE
+	crow::SimpleApp m_crowApp;
+#endif
 
 private:
 	void MainThread();

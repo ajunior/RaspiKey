@@ -172,11 +172,25 @@ namespace bluetooth
 		dev.Address = address;
 
 		const char* name;
-		if (g_dbus_proxy_get_property(proxy, "Alias", &iter) == TRUE)
+		if (g_dbus_proxy_get_property(proxy, "Name", &iter) == TRUE)
 			dbus_message_iter_get_basic(&iter, &name);
 		else
 			name = "<unknown>";
 		dev.Name = name;
+
+		const char* alias;
+		if (g_dbus_proxy_get_property(proxy, "Alias", &iter) == TRUE)
+			dbus_message_iter_get_basic(&iter, &alias);
+		else
+			alias = "<unknown>";
+		dev.Alias = alias;
+
+		const char* modalias;
+		if (g_dbus_proxy_get_property(proxy, "Modalias", &iter) == TRUE)
+			dbus_message_iter_get_basic(&iter, &modalias);
+		else
+			modalias = "<unknown>";
+		dev.Modalias = modalias;
 
 		const char* icon;
 		if (g_dbus_proxy_get_property(proxy, "Icon", &iter) == TRUE)

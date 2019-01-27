@@ -110,23 +110,23 @@ void PollDevicesLoop()
 			continue;
 		}
 
-		int vid, pid = 0;
-		Globals::ModelId modelId;
-		if (!Globals::GetInputDeviceInfo(fds.inputEventDevName.c_str(), vid, pid, modelId))
-		{
-			ErrorMsg("GetInputDeviceInfo() failed");
-			sleep(1);
-			continue;
-		}
+		//int vid, pid = 0;
+		//Globals::ModelId modelId;
+		//if (!Globals::GetInputDeviceInfo(fds.inputEventDevName.c_str(), vid, pid, modelId))
+		//{
+		//	ErrorMsg("GetInputDeviceInfo() failed");
+		//	sleep(1);
+		//	continue;
+		//}
 
-		InfoMsg("Got device info Vid=0x%04x, Pid=0x%04x, ModelId=%d", vid, pid, modelId);
+		//InfoMsg("Got device info Vid=0x%04x, Pid=0x%04x, ModelId=%d", vid, pid, modelId);
 
-		if (modelId == Globals::ModelId::A1644)
+		if (fds.inputEventDevName == A1644_DEV_NAME)
 		{
 			InfoMsg("Using A1644 report filter");
 			g_prp = new A1644();
 		}
-		else if (modelId == Globals::ModelId::A1314)
+		else if (fds.inputEventDevName == A1314_DEV_NAME)
 		{
 			InfoMsg("Using A1314 report filter");
 			g_prp = new A1314();

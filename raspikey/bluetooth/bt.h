@@ -14,11 +14,13 @@ namespace bluetooth
 	typedef struct BtDevice
 	{
 		std::string Name;
+		std::string Alias;
+		std::string Modalias;
 		std::string Address;
 		std::string Icon;
 		bool Paired;
 		bool Connected;
-		bool Trusted;
+		bool Trusted;	
 	} tagBtDevice;
 
 	typedef struct BtDeviceInfo

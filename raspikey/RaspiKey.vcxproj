@@ -109,6 +109,9 @@
       <AdditionalDependencies>$(StlAdditionalDependencies);%(AdditionalDependencies);/usr/lib/arm-linux-gnueabihf/libboost_system.a</AdditionalDependencies>
       <LibraryDependencies>crypto;pthread;m;glib-2.0;dbus-1</LibraryDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ShowProgress>false</ShowProgress>
+      <Version>false</Version>
+      <VerboseOutput>true</VerboseOutput>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -125,6 +128,7 @@
       <AdditionalDependencies>$(StlAdditionalDependencies);%(AdditionalDependencies);/usr/lib/x86_64-linux-gnu/libboost_system.a</AdditionalDependencies>
       <LibraryDependencies>crypto;pthread;m;glib-2.0;dbus-1</LibraryDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <VerboseOutput>true</VerboseOutput>
     </Link>
     <PreBuildEvent>
       <AdditionalSourcesToCopyMapping>

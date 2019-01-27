@@ -212,6 +212,8 @@ void WebApiServer::BuildRoutes()
 		{
 			nlohmann::json jobj;
 			jobj["name"] = dev.Name;
+			jobj["alias"] = dev.Alias;
+			jobj["modalias"] = dev.Modalias;
 			jobj["address"] = dev.Address;
 			jobj["icon"] = dev.Icon;
 			jobj["paired"] = dev.Paired;
