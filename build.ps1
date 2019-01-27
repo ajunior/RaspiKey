@@ -10,18 +10,15 @@ try
     Set-Location $PSScriptRoot\raspikey
     & $msbuild_path raspikey.sln /property:Configuration=$configuration /property:Platform=$platform
     if($LastExitCode -ne 0) {
-        throw "raspikey.sln build failed"
-    }
+        throw "raspikey.sln build failed" }
 
     Set-Location $PSScriptRoot\raspikey-ui-vue
     & yarn install
     if($LastExitCode -ne 0) {
-        throw "yarn install failed"
-    }
+        throw "yarn install failed" }
     & yarn build
     if($LastExitCode -ne 0) {
-        throw "yarn build failed"
-    }
+        throw "yarn build failed" }
 
     Set-Location $PSScriptRoot
     New-Item -ItemType Directory -Force -Path .\build
