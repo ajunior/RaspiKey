@@ -12,7 +12,7 @@ try
         throw "raspikey.sln build failed"
     }
 
-    Set-Location $PSScriptRoot\raspikey-ui
+    Set-Location $PSScriptRoot\raspikey-ui-vue
     & yarn install
     if($LastExitCode -ne 0) {
         throw "yarn install failed"
@@ -25,9 +25,9 @@ try
     Set-Location $PSScriptRoot
     New-Item -ItemType Directory -Force -Path .\build
     Copy-Item -Force -Path .\raspikey\bin\$platform\$configuration\raspikey .\setup\setup
-    Copy-Item -Recurse -Force -Path .\raspikey-ui\build .\setup\setup\html
+    Copy-Item -Recurse -Force -Path .\raspikey-ui-vue\dist .\setup\setup\html
 
-    Compress-Archive -CompressionLevel Optimal -Path .\setup\* .\build\raspikey.zip
+    Compress-Archive -Force -CompressionLevel Optimal -Path .\setup\* .\build\raspikey.zip
 }
 finally
 {
