@@ -2,7 +2,7 @@
 
 <template>
 
-  <md-card md-with-hover>
+  <md-card>
     <md-card-header>
       <md-card-header-text>
         <div class="md-title">{{ deviceData.name }}</div>
@@ -20,8 +20,8 @@
 
       <div class="md-layout">
         <div class="md-layout-item">
-          <span class="md-body-1" v-if="deviceData.connected"><md-icon style="color: #14d100">bluetooth_connected</md-icon> Connected</span>
-          <span class="md-body-1" v-else-if="deviceData.paired"><md-icon style="color: #d10000">bluetooth</md-icon> Paired (but disconnected)</span>
+          <span class="md-body-1" v-if="deviceData.connected"><md-icon style="color: #14d100">bluetooth_connected</md-icon> Paired (connected)</span>
+          <span class="md-body-1" v-else-if="deviceData.paired"><md-icon>bluetooth</md-icon> Paired (disconnected)</span>
           <span class="md-body-1" v-else><md-icon>bluetooth_disabled</md-icon> Unpaired</span>
         </div>
       </div>
@@ -41,8 +41,9 @@
     </md-card-content>
 
     <md-card-actions>
-      <md-button class="md-primary" v-on:click="pairDevice()" :disabled="disabled||deviceData.connected||deviceData.paired">Pair</md-button>
-      <md-button class="md-accent" v-on:click="removeDevice()" :disabled="disabled">Remove</md-button>
+      <md-button class="md-primary" v-on:click="pairDevice()" :disabled="disabled||deviceData.connected||deviceData.paired"><md-icon>bluetooth</md-icon> Pair</md-button>
+      <md-button class="md-accent" v-on:click="removeDevice()" :disabled="disabled"><md-icon>delete</md-icon> Remove</md-button>
+      <md-button class="md-icon-button" v-on:click="deviceDetails()" :disabled="disabled"><md-icon>info</md-icon></md-button>
     </md-card-actions>
   </md-card>
 
@@ -54,6 +55,7 @@ export default {
   props: {
     pairDeviceParent: null,
     removeDeviceParent: null,
+    deviceDetailsParent: null,
     deviceData: {},
     disabled: false      
   },
@@ -68,6 +70,9 @@ export default {
       },
       removeDevice: async function() {
         this.removeDeviceParent(this.deviceData);
+      },
+      deviceDetails: async function() {
+        this.deviceDetailsParent(this.deviceData);
       }
   }
 };

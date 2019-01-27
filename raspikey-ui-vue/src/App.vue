@@ -16,18 +16,18 @@
       <div class="main-control">
         <div class="md-headline"><md-icon>settings</md-icon> Main Control</div>
 
-        <md-switch v-model="discovery" :disabled="busy" @change="changeDiscovery()"><md-icon>settings_bluetooth</md-icon> Bluetooth Device Discovery</md-switch>
+        <md-switch v-model="discovery" :disabled="busy" @change="changeDiscovery()"><md-icon>bluetooth_searching</md-icon> Bluetooth Keyboards Discovery</md-switch>
 
         <div class="md-title">State</div>     
         <div class="md-caption">Save or factory Reset the current RaspiKey state. <br/>For example you will need to Save state when you pair a new keyboard and you'd want to keep it paired them after RaspiKey restarts.</div>         
         <md-button class="md-raised md-primary" v-on:click="saveState()" :disabled="!connected"><md-icon>save</md-icon> Save</md-button>
         <md-button class="md-raised md-accent" v-on:click="resetState()" :disabled="!connected"><md-icon>delete</md-icon> Reset</md-button>
 
-        <div class="md-title">RaspiKey USB Device Info</div>
+        <div class="md-title">Details</div>
 
         <div class="md-body-2">Status:
-          <span class="md-body-1" v-if="connected"><md-icon style="color: #14d100">power</md-icon> Connected.</span>
-          <span class="md-body-1" v-if="!connected"><md-icon style="color: #d10000">power</md-icon> Connecting...</span>
+          <span class="md-body-1" v-if="connected"><md-icon style="color: #14d100">usb</md-icon> Connected.</span>
+          <span class="md-body-1" v-if="!connected"><md-icon style="color: #d10000">usb</md-icon> Connecting...</span>
         </div>
         
 
@@ -39,10 +39,10 @@
     <md-content class="md-elevation-1">
       
       <div class="md-headline"><md-icon>keyboard</md-icon> Keyboards</div>      
-      <div class="md-caption">List of discovered and/or paired Bluetooth keyboards.</div>
+      <div class="md-caption">View and manage discovered Bluetooth keyboards.</div>
 
       <div class="device-cards">        
-        <DeviceCard v-for="device in devices" :key="device.address" :deviceData="device" :pairDeviceParent="pairDevice" :removeDeviceParent="removeDevice" :disabled="busy"/>
+        <DeviceCard v-for="device in devices" :key="device.address" :deviceData="device" :pairDeviceParent="pairDevice" :removeDeviceParent="removeDevice" :deviceDetailsParent="deviceDetails" :disabled="busy"/>
       </div>
 
     </md-content>
@@ -196,6 +196,20 @@
         await ApiService.removeDevice(deviceData.address);
 
         await this.updateUi();
+      },
+      deviceDetails: async function(deviceData) {
+        
+        console.log("deviceDetails()", deviceData);
+
+        let result = await ApiService.getDeviceInfo(deviceData.address);
+
+        var innerHtml = "";
+        Object.keys(result).forEach(function (k) {
+            innerHtml += "<strong>" + k + "</strong>: " + result[k] + "<br/>";
+        });
+
+        await this.$refs.modalDialog1.showModal(innerHtml, deviceData.name, ModalDialog.Ok, true);
+        
       }
     }
   }
