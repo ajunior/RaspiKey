@@ -216,7 +216,7 @@ void WebApiServer::BuildRoutes()
 			jobj["icon"] = dev.Icon;
 			jobj["paired"] = dev.Paired;
 			jobj["connected"] = dev.Connected;
-			jobj["trusted"] = dev.Trusted;			
+			jobj["trusted"] = dev.Trusted;
 
 			if (dev.Connected)
 			{
@@ -251,22 +251,22 @@ void WebApiServer::BuildRoutes()
 			if (val == nullptr)
 				return crow::response(400, msg);
 
-			bluetooth::BtDeviceInfo dd;
-			bluetooth::GetDeviceInfo(val, dd);
+			bluetooth::BtDeviceInfo di;
+			bluetooth::GetDeviceInfo(val, di);
 
 			nlohmann::json jobj;
-			jobj["name"] = dd.Name;
-			jobj["address"] = dd.Address;
-			jobj["alias"] = dd.Alias;
-			jobj["class"] = dd.Class;
-			jobj["appearance"] = dd.Appearance;
-			jobj["icon"] = dd.Icon;
-			jobj["paired"] = dd.Paired;
-			jobj["trusted"] = dd.Trusted;
-			jobj["blocked"] = dd.Blocked;
-			jobj["connected"] = dd.Connected;
-			jobj["legacyPairing"] = dd.LegacyPairing;
-			jobj["modalias"] = dd.Modalias;
+			jobj["name"] = di.Name;
+			jobj["address"] = di.Address;
+			jobj["alias"] = di.Alias;
+			jobj["class"] = di.Class;
+			jobj["appearance"] = di.Appearance;
+			jobj["icon"] = di.Icon;
+			jobj["paired"] = di.Paired;
+			jobj["trusted"] = di.Trusted;
+			jobj["blocked"] = di.Blocked;
+			jobj["connected"] = di.Connected;
+			jobj["legacyPairing"] = di.LegacyPairing;
+			jobj["modalias"] = di.Modalias;
 
 			return crow::response(200, jobj.dump());
 		}

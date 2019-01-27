@@ -9,19 +9,21 @@
 #include <string> 
 #include "ReportFilter.h"
 
-typedef struct DevFileDescriptors
+typedef struct FileDescriptors
 {
-	int hidgKbFd = 0;
-	int appleKbInputEventFd = 0;
-	int appleKbHidrawFd = 0;
-	std::string appleKbInputEventDevName;
-} tagDevFileDescriptors;
+	int inputEventFd = 0;
+	int hidgFd = 0;
+	int hidRawFd = 0;
+	std::string inputEventDevName;
+} tagFileDescriptors;
 
-int ForwardingLoop(IReportFilter* prp, int appleKbHidrawFd, int hidgKbFd);
-int OpenAppleKbDevice(std::string& strDevName, int& appleKbInputEventFd, int& appleKbHidrawFd);
-int OpenHidgKbDevice(int& hidgKbFd);
-bool OpenDevices(DevFileDescriptors& fds);
-void CloseDevices(DevFileDescriptors& fds);
+int ForwardingLoop(IReportFilter* prp, int hidRawFd, int hidgFd);
+
+int OpenKbDevice(std::string& strDevName, int& inputEventFd, int& hidRawFd);
+int OpenHidgDevice(int& hidgFd);
+
+bool OpenDevices(FileDescriptors& fds);
+void CloseDevices(FileDescriptors& fds);
 void SignalHandler(int signo);
 void StopAllServices();
 void PollDevicesLoop();

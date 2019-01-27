@@ -21,8 +21,10 @@
 #define HIDRAW_DEV_PATH "/dev/hidraw0"
 #define HIDG_DEV_PATH "/dev/hidg0"
 
-#define A1314_DEV_NAME "Apple Wireless Keyboard"
-#define A1644_DEV_NAME "Magic Keyboard"
+//#define A1314_DEV_NAME "Apple Wireless Keyboard"
+//#define A1644_DEV_NAME "Magic Keyboard"
+
+
 
 #define LOG_FILE_PATH "/tmp/raspikey.log"
 #define VERSION "1.0.8"
@@ -84,11 +86,23 @@ namespace Globals
 		HidRCmdMask = 0x80
 	};
 
+	enum class ModelId: uint8_t
+	{
+		Unknown = 0, A1314, A1644
+	};
+
+	typedef struct DevDesc {
+		int Vid;
+		int Pid;
+		ModelId Model;
+	} tagDevDesc;
+
 	typedef struct HidgOutputReport
 	{
 		uint8_t ReportId;
 		uint8_t Key;
 	} tagHidgOutputReport;
+
 	//
 	//
 
@@ -97,7 +111,9 @@ namespace Globals
 	extern bool g_dwSwapAltCmd;
 	extern bool g_dwSwapFnCtrl;
 	extern std::string g_strSerial;	
-	extern char g_szModuleDir[PATH_MAX];		
+	extern char g_szModuleDir[PATH_MAX];
+	extern DevDesc g_devDesc[13];
+
 	//
 	//
 
@@ -128,7 +144,11 @@ namespace Globals
 
 	int GetBtHidBatteryCapacity(const std::string& btaddress);
 	long GetUptime();
-	bool LedSetState(const bool state, const char* const led = "0");
+	bool SetPiLedState(bool state, const char* const led = "0");
+
+	bool GetInputDeviceInfo(const char* const szDeviceName, int& vid, int& pid, ModelId& modelId);
+
+
 	//
 	//
 }

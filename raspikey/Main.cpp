@@ -34,8 +34,9 @@
 
 using namespace std;
 
+IReportFilter* g_prp;
 WebApiServer g_WebApiServer;
-static bool g_ExitRequested = false;
+bool g_ExitRequested = false;
 
 int main(int argc, char** argv)
 {
@@ -100,7 +101,7 @@ void PollDevicesLoop()
 {
 	while (!g_ExitRequested)
 	{
-		DevFileDescriptors fds;
+		FileDescriptors fds;
 		memset(&fds, 0, sizeof(fds));
 
 		if (!OpenDevices(fds))
@@ -109,40 +110,47 @@ void PollDevicesLoop()
 			continue;
 		}
 
-		IReportFilter* prp;
-		if (fds.appleKbInputEventDevName == A1644_DEV_NAME)
+		int vid, pid = 0;
+		Globals::ModelId modelId;
+		if (!Globals::GetInputDeviceInfo(fds.inputEventDevName.c_str(), vid, pid, modelId))
+		{
+			ErrorMsg("GetInputDeviceInfo() failed");
+			sleep(1);
+			continue;
+		}
+
+		InfoMsg("Got device info Vid=0x%04x, Pid=0x%04x, ModelId=%d", vid, pid, modelId);
+
+		if (modelId == Globals::ModelId::A1644)
 		{
 			InfoMsg("Using A1644 report filter");
-			prp = new A1644();
+			g_prp = new A1644();
 		}
-		else if (fds.appleKbInputEventDevName == A1314_DEV_NAME)
+		else if (modelId == Globals::ModelId::A1314)
 		{
 			InfoMsg("Using A1314 report filter");
-			prp = new A1314();
+			g_prp = new A1314();
 		}
 		else
 		{
-			//ErrorMsg("Unexpected device %s", fds.appleKbInputEventDevName.c_str());
-			//sleep(1);
-			//continue;
 			InfoMsg("Using Generic report filter");
-			prp = new GenericReportFilter();
+			g_prp = new GenericReportFilter();
 		}
 
 		// Start forwarding loop with the established devices
-		ForwardingLoop(prp, fds.appleKbHidrawFd, fds.hidgKbFd);
+		ForwardingLoop(g_prp, fds.hidRawFd, fds.hidgFd);
 		if (g_ExitRequested)
 		{
 			// This is to prevent the frozen "C" key situation if the user presses Ctrl-C in the raspikey process console.
 			DbgMsg("Sending break scancode before exiting");
 			uint8_t buf[16] = { 0 };
 			buf[0] = 1;
-			write(fds.hidgKbFd, buf, 9);
+			write(fds.hidgFd, buf, 9);
 		}
 
 		CloseDevices(fds);
-		delete prp;
-		prp = nullptr;
+		delete g_prp;
+		g_prp = nullptr;
 
 		sleep(1);
 	}
@@ -156,25 +164,25 @@ void StopAllServices()
 	g_WebApiServer.Stop();	
 }
 
-void CloseDevices(DevFileDescriptors& fds)
+void CloseDevices(FileDescriptors& fds)
 {
-	close(fds.appleKbInputEventFd);
-	close(fds.appleKbHidrawFd);
-	close(fds.hidgKbFd);
+	close(fds.inputEventFd);
+	close(fds.hidRawFd);
+	close(fds.hidgFd);
 }
 
-bool OpenDevices(DevFileDescriptors& fds)
+bool OpenDevices(FileDescriptors& fds)
 {
-	int res = OpenAppleKbDevice(fds.appleKbInputEventDevName, fds.appleKbInputEventFd, fds.appleKbHidrawFd);
+	int res = OpenKbDevice(fds.inputEventDevName, fds.inputEventFd, fds.hidRawFd);
 	if (res < 0)
 		return false;
 
-	res = OpenHidgKbDevice(fds.hidgKbFd);
+	res = OpenHidgDevice(fds.hidgFd);
 
 	return res >= 0;
 }
 
-int ForwardingLoop(IReportFilter* prp, int appleKbHidrawFd, int hidgKbFd)
+int ForwardingLoop(IReportFilter* prp, int hidRawFd, int hidgFd)
 {
 	uint8_t buf[16] = { 0 };
 
@@ -182,9 +190,9 @@ int ForwardingLoop(IReportFilter* prp, int appleKbHidrawFd, int hidgKbFd)
 	{
 		fd_set fds;
 		FD_ZERO(&fds);
-		FD_SET(appleKbHidrawFd, &fds);
-		FD_SET(hidgKbFd, &fds);
-		const int fdsmax = std::max(appleKbHidrawFd, hidgKbFd);
+		FD_SET(hidRawFd, &fds);
+		FD_SET(hidgFd, &fds);
+		const int fdsmax = std::max(hidRawFd, hidgFd);
 
 		struct timeval tv{}; 
 		tv.tv_sec = 1;
@@ -200,12 +208,12 @@ int ForwardingLoop(IReportFilter* prp, int appleKbHidrawFd, int hidgKbFd)
 		}
 
 		// Kbd -> PC
-		if (FD_ISSET(appleKbHidrawFd, &fds))
+		if (FD_ISSET(hidRawFd, &fds))
 		{
-			ssize_t len = read(appleKbHidrawFd, buf, sizeof(buf));
+			ssize_t len = read(hidRawFd, buf, sizeof(buf));
 			if (len < 0)
 			{
-				ErrorMsg("Error read(appleKbFd): %s", strerror(errno));
+				ErrorMsg("Error read: %s", strerror(errno));
 				return -1;
 			}
 					
@@ -216,22 +224,22 @@ int ForwardingLoop(IReportFilter* prp, int appleKbHidrawFd, int hidgKbFd)
 			{
 				DbgMsg("[in] ~> %s", Globals::FormatBuffer(buf, len).c_str());
 
-				len = write(hidgKbFd, buf, len);
+				len = write(hidgFd, buf, len);
 				if (len < 0)
 				{
-					ErrorMsg("Error write(hidgKbFd): %s", strerror(errno));
+					ErrorMsg("Error write: %s", strerror(errno));
 					return -1;
 				}
 			}
 		}
 
 		// PC -> Kbd
-		if (FD_ISSET(hidgKbFd, &fds))
+		if (FD_ISSET(hidgFd, &fds))
 		{
-			ssize_t len = read(hidgKbFd, buf, sizeof(buf));
+			ssize_t len = read(hidgFd, buf, sizeof(buf));
 			if (len < 0)
 			{
-				ErrorMsg("Error read(hidgKbFd): %s", strerror(errno));
+				ErrorMsg("Error read: %s", strerror(errno));
 				return -1;
 			}
 
@@ -242,10 +250,10 @@ int ForwardingLoop(IReportFilter* prp, int appleKbHidrawFd, int hidgKbFd)
 			{
 				DbgMsg("[out] ~> %s", Globals::FormatBuffer(buf, len).c_str());
 
-				len = write(appleKbHidrawFd, buf, len);
+				len = write(hidRawFd, buf, len);
 				if (len < 0)
 				{
-					ErrorMsg("Error write(appleKbFd): %s", strerror(errno));
+					ErrorMsg("Error write: %s", strerror(errno));
 					return -1;
 				}
 			}
@@ -255,10 +263,10 @@ int ForwardingLoop(IReportFilter* prp, int appleKbHidrawFd, int hidgKbFd)
 	return 0;
 }
 
-int OpenAppleKbDevice(string& strDevName, int& appleKbInputEventFd, int& appleKbHidrawFd)
+int OpenKbDevice(string& strDevName, int& inputEventFd, int& hidRawFd)
 {
-	appleKbInputEventFd = open(EVENT_DEV_PATH, O_RDWR);
-	if (appleKbInputEventFd < 0)
+	inputEventFd = open(EVENT_DEV_PATH, O_RDWR);
+	if (inputEventFd < 0)
 	{
 		InfoMsg("Failed to open() " EVENT_DEV_PATH ": %s", strerror(errno));
 		
@@ -266,27 +274,27 @@ int OpenAppleKbDevice(string& strDevName, int& appleKbInputEventFd, int& appleKb
 	}
 
 	char szDevName[256] = "";
-	ioctl(appleKbInputEventFd, EVIOCGNAME(sizeof(szDevName)), szDevName);
+	ioctl(inputEventFd, EVIOCGNAME(sizeof(szDevName)), szDevName);
 	strDevName = szDevName;
 
-	int res = ioctl(appleKbInputEventFd, EVIOCGRAB, 1);
+	int res = ioctl(inputEventFd, EVIOCGRAB, 1);
 	if (res < 0)
 	{
 		InfoMsg("Failed to get exclusive access on " EVENT_DEV_PATH ": %s", strerror(errno));
 		
-		close(appleKbInputEventFd);
-		appleKbInputEventFd = -1;
+		close(inputEventFd);
+		inputEventFd = -1;
 
 		return -1;
 	}
 
-	appleKbHidrawFd = open(HIDRAW_DEV_PATH, O_RDWR);
-	if (appleKbHidrawFd < 0)
+	hidRawFd = open(HIDRAW_DEV_PATH, O_RDWR);
+	if (hidRawFd < 0)
 	{
 		InfoMsg("Failed to open() " HIDRAW_DEV_PATH ": %s", strerror(errno));
 
-		close(appleKbInputEventFd);
-		appleKbInputEventFd = -1;
+		close(inputEventFd);
+		inputEventFd = -1;
 
 		return -1;
 	}
@@ -294,10 +302,10 @@ int OpenAppleKbDevice(string& strDevName, int& appleKbInputEventFd, int& appleKb
 	return 0;
 }
 
-int OpenHidgKbDevice(int& hidgKbFd)
+int OpenHidgDevice(int& hidgFd)
 {
-	hidgKbFd = open(HIDG_DEV_PATH, O_RDWR);
-	if (hidgKbFd == -1)
+	hidgFd = open(HIDG_DEV_PATH, O_RDWR);
+	if (hidgFd == -1)
 	{
 		InfoMsg("Failed to open() " HIDG_DEV_PATH ": %s", strerror(errno));
 
