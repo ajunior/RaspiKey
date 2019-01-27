@@ -21,13 +21,8 @@
 #define HIDRAW_DEV_PATH "/dev/hidraw0"
 #define HIDG_DEV_PATH "/dev/hidg0"
 
-//#define A1314_DEV_NAME "Apple Wireless Keyboard"
-//#define A1644_DEV_NAME "Magic Keyboard"
-
-
-
 #define LOG_FILE_PATH "/tmp/raspikey.log"
-#define VERSION "1.0.8"
+#define VERSION "1.1.0"
 //
 //
 
