@@ -6,6 +6,7 @@ $configuration="Release"
 
 try 
 {
+
     Set-Location $PSScriptRoot\raspikey
     & $msbuild_path raspikey.sln /property:Configuration=$configuration /property:Platform=$platform
     if($LastExitCode -ne 0) {
@@ -24,7 +25,11 @@ try
 
     Set-Location $PSScriptRoot
     New-Item -ItemType Directory -Force -Path .\build
+    if( Test-Path .\setup\setup\raspikey ) {
+        Remove-Item -Force -Path .\setup\setup\raspikey }
     Copy-Item -Force -Path .\raspikey\bin\$platform\$configuration\raspikey .\setup\setup
+    if( Test-Path .\setup\setup\html ) {
+        Remove-Item -Force -Recurse -Path .\setup\setup\html }
     Copy-Item -Recurse -Force -Path .\raspikey-ui-vue\dist .\setup\setup\html
 
     Compress-Archive -Force -CompressionLevel Optimal -Path .\setup\* .\build\raspikey.zip
