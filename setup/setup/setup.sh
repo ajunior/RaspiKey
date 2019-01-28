@@ -10,6 +10,9 @@ if [ $(id -u) -ne 0 ]; then
 	exit 1
 fi
 
+# Turn on RPi led permanently so that we know when it shut down at the end
+echo 0 | sudo tee /sys/class/leds/led0/brightness > /dev/null
+
 echo "Running $scriptPath..."
 
 # Error handling
