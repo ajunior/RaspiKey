@@ -157,18 +157,21 @@ void OpenDevicesLoop()
 		}
 
 		// Load keymap if exists
-		string keyMapPath = Globals::FormatString(DATA_DIR "/%s.keymap", strDevId.c_str());
-		ifstream keyMapFs(keyMapPath);
+		string strPath = Globals::FormatString(DATA_DIR "/%s.keymap", strDevId.c_str());
+		ifstream keyMapFs(strPath);
 		if (keyMapFs.good()) // Do we have a keymap file?
 		{
+			// Attempt to load
 			auto keyMap = new KeyMap();
 			try
 			{
-				keyMap->LoadKeyMapFile(keyMapPath.c_str());
+				keyMap->LoadKeyMapFile(strPath.c_str());
 				g_pReportFilters[1] = keyMap;
 			}
 			catch (const exception& m)
 			{
+				ErrorMsg(m.what());
+
 				delete keyMap;
 			}
 		}
