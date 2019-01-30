@@ -9,22 +9,28 @@
 #include <string> 
 #include "ReportFilter.h"
 
-typedef struct FileDescriptors
+typedef struct DeviceDescriptors
 {
-	int inputEventFd = 0;
-	int hidgFd = 0;
-	int hidRawFd = 0;
+	int inputEventFd = 0; // device: /dev/input/eventX
+	int hidRawFd = 0; // device: /dev/hidrawX
+
+	int hidgFd = 0; // device: /dev/hidgX
+	
 	std::string inputEventDevName;
-} tagFileDescriptors;
+	std::string inputEventDevPhys;
+	std::string inputEventDevUniq;
+} tagDeviceDescriptors;
 
-int ForwardingLoop(IReportFilter* prp, int hidRawFd, int hidgFd);
+int ForwardingLoop(IReportFilter** prps, int hidRawFd, int hidgFd);
 
-int OpenKbDevice(std::string& strDevName, int& inputEventFd, int& hidRawFd);
+int OpenKbDevice(DeviceDescriptors& fds);
 int OpenHidgDevice(int& hidgFd);
 
-bool OpenDevices(FileDescriptors& fds);
-void CloseDevices(FileDescriptors& fds);
 void SignalHandler(int signo);
 void StopAllServices();
-void PollDevicesLoop();
+void OpenDevicesLoop();
 bool StartServices();
+
+bool DeleteKeyMap(const char* addr);
+void SetKeyMap(const char* addr, const char* szJson);
+std::string GetKeyMap(const char* addr);

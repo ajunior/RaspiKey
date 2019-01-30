@@ -5,9 +5,16 @@
 //
 
 #include "GenericReportFilter.h"
+#include "Logger.h"
+#include <fstream>
+#include <sstream>
+#include "JsonTypes.h"
+
+using namespace std;
 
 GenericReportFilter::GenericReportFilter()
 {
+	
 }
 
 

@@ -29,6 +29,7 @@
       <Filter>gdbus</Filter>
     </ClCompile>
     <ClCompile Include="GenericReportFilter.cpp" />
+    <ClCompile Include="KeyMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="A1314.h" />
@@ -51,6 +52,8 @@
     <ClInclude Include="json.hpp" />
     <ClInclude Include="ReportFilter.h" />
     <ClInclude Include="GenericReportFilter.h" />
+    <ClInclude Include="JsonTypes.h" />
+    <ClInclude Include="KeyMap.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bluetooth">

@@ -6,7 +6,7 @@
     <md-card-header>
       <md-card-header-text>
         <div class="md-title">{{ deviceData.name }}</div>
-        <div class="md-subhead">{{ deviceData.address }}</div>
+        <div class="md-subhead">{{ deviceData.alias }} ({{ deviceData.address }})</div>        
       </md-card-header-text>
     </md-card-header>
 

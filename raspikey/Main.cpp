@@ -31,12 +31,15 @@
 #include "Logger.h"
 #include "GenericReportFilter.h"
 #include "Main.h"
+#include "json.hpp"
+#include "JsonTypes.h"
+#include "KeyMap.h"
 
 using namespace std;
 
-IReportFilter* g_prp;
 WebApiServer g_WebApiServer;
 bool g_ExitRequested = false;
+IReportFilter* g_pReportFilters[3] = { nullptr };
 
 int main(int argc, char** argv)
 {
@@ -48,13 +51,25 @@ int main(int argc, char** argv)
 
 	InfoMsg(Globals::FormatString("System uptime: %lu", Globals::GetUptime()).c_str());
 
+	struct stat info;
+	if (stat(DATA_DIR, &info) != 0)
+	{
+		ErrorMsg("cannot access data directory %s", DATA_DIR);
+		return -1;
+	}
+	if (!(info.st_mode & S_IFDIR))
+	{
+		ErrorMsg("data directory %s is not a directory", DATA_DIR);
+		return -1;
+	}
+
 	if (!StartServices())
 	{
 		ErrorMsg("StartServices() failed.");
 		return -1;
 	}
 
-	PollDevicesLoop();
+	OpenDevicesLoop();
 
 	return 0;
 }
@@ -97,60 +112,87 @@ bool StartServices()
 	return true;
 }
 
-void PollDevicesLoop()
+void OpenDevicesLoop()
 {
 	while (!g_ExitRequested)
 	{
-		FileDescriptors fds;
+		DeviceDescriptors fds;
 		memset(&fds, 0, sizeof(fds));
 
-		if (!OpenDevices(fds))
+		// Open devices
+		if (OpenKbDevice(fds) < 0)
 		{
 			sleep(1);
 			continue;
 		}
+		if (OpenHidgDevice(fds.hidgFd) < 0)
+		{
+			close(fds.inputEventFd);
+			close(fds.hidRawFd);
 
-		//int vid, pid = 0;
-		//Globals::ModelId modelId;
-		//if (!Globals::GetInputDeviceInfo(fds.inputEventDevName.c_str(), vid, pid, modelId))
-		//{
-		//	ErrorMsg("GetInputDeviceInfo() failed");
-		//	sleep(1);
-		//	continue;
-		//}
+			sleep(1);
+			continue;
+		}
 
-		//InfoMsg("Got device info Vid=0x%04x, Pid=0x%04x, ModelId=%d", vid, pid, modelId);
+		// Get the unique identifier (bluetooth address) for opened device
+		string strDevId = fds.inputEventDevUniq;
+		std::transform(strDevId.begin(), strDevId.end(), strDevId.begin(), ::toupper);
+		InfoMsg("Device unique identifier: %s", strDevId.c_str());
 
+		// Create the correct keyboard device IReportFilter		
 		if (fds.inputEventDevName == A1644_DEV_NAME)
 		{
 			InfoMsg("Using A1644 report filter");
-			g_prp = new A1644();
+			g_pReportFilters[0] = new A1644();
 		}
 		else if (fds.inputEventDevName == A1314_DEV_NAME)
 		{
 			InfoMsg("Using A1314 report filter");
-			g_prp = new A1314();
+			g_pReportFilters[0] = new A1314();
 		}
 		else
 		{
 			InfoMsg("Using Generic report filter");
-			g_prp = new GenericReportFilter();
+			g_pReportFilters[0] = new GenericReportFilter(); 
+		}
+
+		// Load keymap if exists
+		string keyMapPath = Globals::FormatString(DATA_DIR "/%s.keymap", strDevId.c_str());
+		ifstream keyMapFs(keyMapPath);
+		if (keyMapFs.good()) // Do we have a keymap file?
+		{
+			auto keyMap = new KeyMap();
+			try
+			{
+				keyMap->LoadKeyMapFile(keyMapPath.c_str());
+				g_pReportFilters[1] = keyMap;
+			}
+			catch (const exception& m)
+			{
+				delete keyMap;
+			}
 		}
 
 		// Start forwarding loop with the established devices
-		ForwardingLoop(g_prp, fds.hidRawFd, fds.hidgFd);
+		ForwardingLoop(g_pReportFilters, fds.hidRawFd, fds.hidgFd);
+
+		// This is to prevent the frozen "C" key situation if the user presses Ctrl-C in the raspikey process console.
 		if (g_ExitRequested)
 		{
-			// This is to prevent the frozen "C" key situation if the user presses Ctrl-C in the raspikey process console.
 			DbgMsg("Sending break scancode before exiting");
 			uint8_t buf[16] = { 0 };
 			buf[0] = 1;
 			write(fds.hidgFd, buf, 9);
 		}
+		
+		// Close devices
+		close(fds.inputEventFd);
+		close(fds.hidRawFd);
+		close(fds.hidgFd);
 
-		CloseDevices(fds);
-		delete g_prp;
-		g_prp = nullptr;
+		// Delete all previously created IReportFilter instances
+		for (int k = 0; g_pReportFilters[k] != nullptr; k++)
+			delete g_pReportFilters[k];
 
 		sleep(1);
 	}
@@ -164,25 +206,7 @@ void StopAllServices()
 	g_WebApiServer.Stop();	
 }
 
-void CloseDevices(FileDescriptors& fds)
-{
-	close(fds.inputEventFd);
-	close(fds.hidRawFd);
-	close(fds.hidgFd);
-}
-
-bool OpenDevices(FileDescriptors& fds)
-{
-	int res = OpenKbDevice(fds.inputEventDevName, fds.inputEventFd, fds.hidRawFd);
-	if (res < 0)
-		return false;
-
-	res = OpenHidgDevice(fds.hidgFd);
-
-	return res >= 0;
-}
-
-int ForwardingLoop(IReportFilter* prp, int hidRawFd, int hidgFd)
+int ForwardingLoop(IReportFilter** prps, int hidRawFd, int hidgFd)
 {
 	uint8_t buf[16] = { 0 };
 
@@ -207,7 +231,7 @@ int ForwardingLoop(IReportFilter* prp, int hidRawFd, int hidgFd)
 			return -1; // Any other error, exit the loop
 		}
 
-		// Kbd -> PC
+		// Direction: hidRawFd -> hidgFd
 		if (FD_ISSET(hidRawFd, &fds))
 		{
 			ssize_t len = read(hidRawFd, buf, sizeof(buf));
@@ -219,12 +243,17 @@ int ForwardingLoop(IReportFilter* prp, int hidRawFd, int hidgFd)
 					
 			DbgMsg("[in] -> %s", Globals::FormatBuffer(buf, len).c_str());
 
-			len = prp->ProcessInputReport(buf, len);
-			if (len > 0)
+			// Process input report with each IReportFilter
+			for (int k = 0; prps[k] != nullptr; k++)
+			{
+				len = prps[k]->ProcessInputReport(buf, len); // Process report with filter
+			}			
+
+			if (len > 0) // Should we suppress this report?
 			{
 				DbgMsg("[in] ~> %s", Globals::FormatBuffer(buf, len).c_str());
 
-				len = write(hidgFd, buf, len);
+				len = write(hidgFd, buf, len); // Transfer report to hidg device
 				if (len < 0)
 				{
 					ErrorMsg("Error write: %s", strerror(errno));
@@ -233,7 +262,7 @@ int ForwardingLoop(IReportFilter* prp, int hidRawFd, int hidgFd)
 			}
 		}
 
-		// PC -> Kbd
+		// Direction: hidgFd -> hidRawFd
 		if (FD_ISSET(hidgFd, &fds))
 		{
 			ssize_t len = read(hidgFd, buf, sizeof(buf));
@@ -245,8 +274,13 @@ int ForwardingLoop(IReportFilter* prp, int hidRawFd, int hidgFd)
 
 			DbgMsg("[out] -> %s", Globals::FormatBuffer(buf, len).c_str());
 
-			len = prp->ProcessOutputReport(buf, len);
-			if (len > 0)
+			// Process output report with each IReportFilter
+			for (int k = 0; prps[k] != nullptr; k++)
+			{
+				len = prps[k]->ProcessOutputReport(buf, len); // Process report with filter
+			}
+
+			if (len > 0) // Should we suppress this report?
 			{
 				DbgMsg("[out] ~> %s", Globals::FormatBuffer(buf, len).c_str());
 
@@ -263,10 +297,10 @@ int ForwardingLoop(IReportFilter* prp, int hidRawFd, int hidgFd)
 	return 0;
 }
 
-int OpenKbDevice(string& strDevName, int& inputEventFd, int& hidRawFd)
+int OpenKbDevice(DeviceDescriptors& fds)
 {
-	inputEventFd = open(EVENT_DEV_PATH, O_RDWR);
-	if (inputEventFd < 0)
+	fds.inputEventFd = open(EVENT_DEV_PATH, O_RDWR);
+	if (fds.inputEventFd < 0)
 	{
 		InfoMsg("Failed to open() " EVENT_DEV_PATH ": %s", strerror(errno));
 		
@@ -274,27 +308,35 @@ int OpenKbDevice(string& strDevName, int& inputEventFd, int& hidRawFd)
 	}
 
 	char szDevName[256] = "";
-	ioctl(inputEventFd, EVIOCGNAME(sizeof(szDevName)), szDevName);
-	strDevName = szDevName;
+	ioctl(fds.inputEventFd, EVIOCGNAME(sizeof(szDevName)), szDevName);
+	fds.inputEventDevName = szDevName;
 
-	int res = ioctl(inputEventFd, EVIOCGRAB, 1);
+	char szDevPhys[256] = "";
+	ioctl(fds.inputEventFd, EVIOCGPHYS(sizeof(szDevPhys)), szDevPhys); //BT ctrl address
+	fds.inputEventDevPhys = szDevPhys;
+
+	char szDevUniq[256] = ""; 
+	ioctl(fds.inputEventFd, EVIOCGUNIQ(sizeof(szDevUniq)), szDevUniq); //Dev BT address
+	fds.inputEventDevUniq = szDevUniq;
+
+	int res = ioctl(fds.inputEventFd, EVIOCGRAB, 1);
 	if (res < 0)
 	{
 		InfoMsg("Failed to get exclusive access on " EVENT_DEV_PATH ": %s", strerror(errno));
 		
-		close(inputEventFd);
-		inputEventFd = -1;
+		close(fds.inputEventFd);
+		fds.inputEventFd = -1;
 
 		return -1;
 	}
 
-	hidRawFd = open(HIDRAW_DEV_PATH, O_RDWR);
-	if (hidRawFd < 0)
+	fds.hidRawFd = open(HIDRAW_DEV_PATH, O_RDWR);
+	if (fds.hidRawFd < 0)
 	{
 		InfoMsg("Failed to open() " HIDRAW_DEV_PATH ": %s", strerror(errno));
 
-		close(inputEventFd);
-		inputEventFd = -1;
+		close(fds.inputEventFd);
+		fds.inputEventFd = -1;
 
 		return -1;
 	}
@@ -315,6 +357,77 @@ int OpenHidgDevice(int& hidgFd)
 	return 0;
 }
 
+bool DeleteKeyMap(const char* addr)
+{
+	string keyMapPath = Globals::FormatString(DATA_DIR "/%s.keymap", addr);
+
+	ifstream ifs(keyMapPath);
+	if (!ifs.good())
+		return false;
+	ifs.close();
+
+	if (remove(keyMapPath.c_str()) != 0)
+		return false;
+
+	if (g_pReportFilters[1])
+		delete g_pReportFilters[1];
+	g_pReportFilters[1] = nullptr;
+
+	return true;
+}
+
+string GetKeyMap(const char* addr)
+{
+	const string szPath = Globals::FormatString(DATA_DIR "/%s.keymap", addr);
+
+	ifstream ifs;
+	ifs.open(szPath);
+	if (!ifs.is_open())
+	{
+		string strErr = Globals::FormatString("Failed to read keymap file: %s", szPath.c_str());
+		ErrorMsg(strErr.c_str());
+		throw runtime_error(strErr);
+	}
+
+	stringstream buffer;
+	buffer << ifs.rdbuf();
+	string strKeyMap = buffer.str();
+	ifs.close();
+
+	return strKeyMap;
+}
+
+void SetKeyMap(const char* addr, const char* szJson)
+{
+	// Validate keymap json
+	auto keyMap = new KeyMap();
+	try
+	{
+		keyMap->LoadKeyMap(szJson);
+	}
+	catch (const exception& m)
+	{
+		delete keyMap;
+		throw;
+	}
+
+	// Write validated keymap file
+	const string strPath = Globals::FormatString(DATA_DIR "/%s.keymap", addr);
+	ofstream ofs;
+	ofs.open(strPath);
+	if (!ofs.is_open())
+	{
+		delete keyMap;
+		throw runtime_error("Failed to write keymap file");
+	}
+	ofs << szJson;
+	ofs.close();
+
+	// Set new keymap
+	if (g_pReportFilters[1])
+		delete g_pReportFilters[1];
+	g_pReportFilters[1] = keyMap;
+}
 
 
 

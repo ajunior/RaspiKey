@@ -79,6 +79,7 @@ size_t A1644::ProcessInputReport(uint8_t* buf, size_t len)
 		}
 	}
 
+	/*
 	//Swap key below ESC (0x64) and key to the right of LShift (0x35)
 	uint8_t swaps[] = { 
 		0x64, 0x35, 
@@ -97,6 +98,7 @@ size_t A1644::ProcessInputReport(uint8_t* buf, size_t len)
 			}
 		}
 	}
+	*/
 
 	//Is this a break code for a previously pressed multimedia key?
 	if (m_MultimediaKeyActive && !inRpt.Key1)

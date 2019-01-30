@@ -25,6 +25,7 @@
 #define A1644_DEV_NAME "Magic Keyboard"
 
 #define LOG_FILE_PATH "/tmp/raspikey.log"
+#define DATA_DIR "/data"
 #define VERSION "1.1.0"
 //
 //

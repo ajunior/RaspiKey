@@ -7,9 +7,11 @@
 #pragma once
 
 #include "ReportFilter.h"
+#include <string>
+#include <vector>
+#include "JsonTypes.h"
 
-class GenericReportFilter :
-	public IReportFilter
+class GenericReportFilter : public IReportFilter
 {
 public:
 	GenericReportFilter();

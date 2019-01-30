@@ -12,8 +12,9 @@
 
 using namespace std;
 
-A1314::A1314()
+A1314::A1314() : A1644()
 {
+
 }
 
 
@@ -42,7 +43,7 @@ size_t A1314::ProcessInputReport(uint8_t* buf, size_t len)
 	
 	memcpy(buf, &m_a1644rep, sizeof(A1644HidReport));
 
-	return m_a1644.ProcessInputReport(buf, sizeof(A1644HidReport));
+	return A1644::ProcessInputReport(buf, sizeof(A1644HidReport));
 }
 
 size_t A1314::ProcessOutputReport(uint8_t* buf, size_t len)

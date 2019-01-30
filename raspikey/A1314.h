@@ -29,7 +29,7 @@ typedef struct A1314HidReport2
 	uint8_t Special;
 } tagA1314HidReport2;
 
-class A1314 : public IReportFilter
+class A1314 : public A1644
 {
 public:
 	A1314();
@@ -37,7 +37,7 @@ public:
 
 private:
 	A1644HidReport m_a1644rep = { 0 };
-	A1644 m_a1644;
+	//A1644 m_a1644;
 
 public:
 	size_t ProcessInputReport(uint8_t* buf, size_t len) override;

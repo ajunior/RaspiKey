@@ -9,6 +9,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "ReportFilter.h"
+#include "GenericReportFilter.h"
 
 typedef struct A1644HidReport
 {

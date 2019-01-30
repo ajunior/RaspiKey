@@ -10,6 +10,7 @@
 #include "bluetooth/bt.h"
 #include "Globals.h"
 #include "Logger.h"
+#include "Main.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
@@ -112,7 +113,7 @@ void WebApiServer::BuildRoutes()
 			"rm -f /boot/data.tar.bz2 && "\
 			"/bin/mount -o remount,ro /boot && "\
 			"service bluetooth stop &&"\
-			"/bin/rm -fr /data/*"); 
+			"/bin/rm -fr " DATA_DIR "/*");
 
 		if (retval)
 			return crow::response(500, Globals::FormatString("System command failed with exit code %d", retval));
@@ -397,6 +398,63 @@ void WebApiServer::BuildRoutes()
 		}
 
 		return crow::response(200, "{}");
+	});
+
+	CROW_ROUTE(m_crowApp, "/keymap")
+		.methods("GET"_method, "POST"_method, "DELETE"_method)
+		([](const crow::request& req)
+	{
+		try
+		{
+			char* addr = req.url_params.get("v");
+			string msg = "Expected a query parameter ...?v=[bluetooth device address] e.g. ...?v=0C:D7:46:E4:FF:29";
+			if (addr == nullptr)
+				return crow::response(400, msg);
+
+			if (req.method == "GET"_method)
+			{
+				try
+				{
+					const string strKeymap = GetKeyMap(addr);
+
+					return crow::response(200, strKeymap);
+				}
+				catch (exception& ex)
+				{
+					return crow::response(500, ex.what());
+				}
+			}
+			else if (req.method == "POST"_method)
+			{
+				string szJson = req.body;
+
+				try
+				{
+					SetKeyMap(addr, szJson.c_str());
+				}
+				catch (exception& ex)
+				{
+					return crow::response(500, ex.what());
+				}
+			}
+			else if (req.method == "DELETE"_method)
+			{
+				try
+				{
+					DeleteKeyMap(addr);
+				}
+				catch (exception& ex)
+				{
+					return crow::response(500, ex.what());
+				}
+			}
+		
+			return crow::response(200, "{}");
+		}
+		catch (exception& ex)
+		{
+			return crow::response(500, ex.what());
+		}
 	});
 }
 
