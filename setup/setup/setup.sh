@@ -39,6 +39,14 @@ sed -Ei 's/^127\.0\.1\.1.*$/127.0.1.1\traspikey/' /etc/hosts
 # Minimise the amount of RAM used by the GPU
 echo "gpu_mem=32" | cat >> /boot/config.txt
 
+# Disable ipv6
+cat <<EOT >> /etc/sysctl.d/99-sysctl.conf
+
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+EOT
+
 # Configure raspikey_usb.service and libcomposite device to be available on first boot
 echo "Configuring raspikey libcomposite device..."
 cp $scriptDir/raspikey_usb /usr/sbin/raspikey_usb
@@ -46,9 +54,9 @@ chmod +x /usr/sbin/raspikey_usb
 cp $scriptDir/raspikey_usb.service /etc/systemd/system/
 systemctl enable raspikey_usb.service
 echo "dtoverlay=dwc2" | cat >> /boot/config.txt
-echo "dtoverlay=pi3-disable-wifi" |  cat >> /boot/config.txt
-echo "dwc2" |  cat >> /etc/modules
-echo "libcomposite" |  cat >> /etc/modules
+echo "dtoverlay=pi3-disable-wifi" | cat >> /boot/config.txt
+echo "dwc2" | cat >> /etc/modules
+echo "libcomposite" | cat >> /etc/modules
 
 # Configure the raspikey.service
 echo "Configuring raspikey.service..."

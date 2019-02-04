@@ -31,6 +31,9 @@ void StopAllServices();
 void OpenDevicesLoop();
 bool StartServices();
 
-bool DeleteKeyMap(const char* addr);
-void SetKeyMap(const char* addr, const char* szJson);
-std::string GetKeyMap(const char* addr);
+std::string GetKeymapFilePath(const std::string& addr);
+bool HasKeyMap(const std::string& addr);
+bool DeleteKeyMap(const std::string& addr);
+void SetKeyMap(const std::string& addr, const std::string& json);
+std::string GetKeyMap(const std::string& addr);
+

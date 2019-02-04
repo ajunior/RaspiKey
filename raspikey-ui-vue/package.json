@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "dotenv": "^6.2.0",
+    "file-saver": "^2.0.0",
     "material-design-icons": "^3.0.1",
     "typeface-roboto": "^0.0.54",
     "vue": "^2.5.21",

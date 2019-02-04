@@ -1,28 +1,28 @@
-#include "KeyMap.h"
+#include "KeyMapReportFilter.h"
 #include "Globals.h"
 #include "Logger.h"
 #include <sstream>
 
 using namespace std;
 
-KeyMap::KeyMap()
+KeyMapReportFilter::KeyMapReportFilter()
 {
 
 }
 
 
-KeyMap::~KeyMap()
+KeyMapReportFilter::~KeyMapReportFilter()
 {
 
 }
 
-void KeyMap::LoadKeyMapFile(const char* path)
+void KeyMapReportFilter::LoadKeyMapFile(const std::string& strPath)
 {	
 	ifstream ifs;
-	ifs.open(path);
+	ifs.open(strPath);
 	if (!ifs.is_open())
 	{
-		auto str = Globals::FormatString("Failed to read keymap file %s", path);
+		auto str = Globals::FormatString("Failed to read keymap file %s", strPath.c_str());
 		ErrorMsg(str.c_str());
 
 		throw runtime_error(str);
@@ -36,28 +36,29 @@ void KeyMap::LoadKeyMapFile(const char* path)
 	LoadKeyMap(strJson);
 }
 
-void KeyMap::LoadKeyMap(const std::string& strJson)
+void KeyMapReportFilter::LoadKeyMap(const std::string& strJson)
 {
 	m_keyMap.clear();
 	try
 	{
 		auto jsondoc = nlohmann::json::parse(strJson);
+
 		for (auto it = jsondoc.begin(); it != jsondoc.end(); ++it)
 		{
 			auto keyMapping = it.value().get<JsonTypes::KeyMapping>();
 			m_keyMap.push_back(keyMapping);
 		}
 	}
-	catch (exception& m)
+	catch (const exception& m)
 	{
 		ErrorMsg("Failed to parse keymap data: %s", m.what());
-		throw m;
+		throw;
 	}
 
 	InfoMsg("Successfully loaded keymap");
 }
 
-size_t KeyMap::ProcessInputReport(uint8_t* buf, size_t len)
+size_t KeyMapReportFilter::ProcessInputReport(uint8_t* buf, size_t len)
 {
 	if (buf[0] != 1 || len < 9)
 		return len;
@@ -74,7 +75,8 @@ size_t KeyMap::ProcessInputReport(uint8_t* buf, size_t len)
 				{
 					mod = mapping.omod;
 					key = mapping.okey;
-					break;
+
+					return len;
 				}
 			}
 		}
@@ -83,7 +85,7 @@ size_t KeyMap::ProcessInputReport(uint8_t* buf, size_t len)
 	return len;
 }
 
-size_t KeyMap::ProcessOutputReport(uint8_t* buf, size_t len)
+size_t KeyMapReportFilter::ProcessOutputReport(uint8_t* buf, size_t len)
 {
 
 	return len;

@@ -19,6 +19,8 @@
 #include <algorithm>
 #include "Logger.h"
 #include <regex>
+#include "json.hpp"
+
 
 using namespace std;
 
@@ -26,7 +28,8 @@ namespace Globals
 {
 	bool g_dwSwapAltCmd = false;
 	bool g_dwSwapFnCtrl = true;
-	char g_szModuleDir[PATH_MAX];
+	char g_szModuleDir[PATH_MAX];	
+
 	//DevDesc g_devDesc[13] = { 
 	//	{0x05ac, 0x0208, ModelId::A1314},
 	//	{0x05ac, 0x0209, ModelId::A1314},
@@ -113,7 +116,7 @@ namespace Globals
 		return ret;
 	}
 
-	bool SetPiLedState(bool state, const char* const led)
+	bool SetPiLedState(const bool state, const char* led)
 	{
 		char pfad[128];
 		snprintf(pfad, 128, "/sys/class/leds/%s/brightness", led);
@@ -185,4 +188,6 @@ namespace Globals
 		return false;
 	}
 	*/
+
+	
 }

@@ -38,14 +38,24 @@
         <div class="md-layout-item">          
         </div>
       </div>
+
     </md-card-content>
 
     <md-card-actions>
       <md-button class="md-primary" v-on:click="pairDevice()" :disabled="disabled||deviceData.connected||deviceData.paired"><md-icon>bluetooth</md-icon> Pair</md-button>
       <md-button class="md-accent" v-on:click="removeDevice()" :disabled="disabled"><md-icon>delete</md-icon> Remove</md-button>
       <md-button class="md-icon-button" v-on:click="deviceDetails()" :disabled="disabled"><md-icon>info</md-icon><md-tooltip md-delay="300">Info</md-tooltip></md-button>
-      <md-button class="md-icon-button" :disabled="disabled"><md-icon>map</md-icon><md-tooltip md-delay="300">Custom Keymap</md-tooltip></md-button>
+      <md-menu >
+        <md-button md-menu-trigger class="md-icon-button"><md-icon>map</md-icon><md-tooltip md-delay="300">Custom Keymap</md-tooltip></md-button>
+        <md-menu-content>
+          <input type="file" ref="file" style="display: none" @change="onUploadKeymapFileInputChange">
+          <md-menu-item class="md-primary" @click="$refs.file.click()">Upload...</md-menu-item>
+          <md-menu-item @click="downloadKeymap" :disabled="!deviceData.hasOwnProperty('hasKeymap') || !deviceData.hasKeymap">Download</md-menu-item>
+          <md-menu-item @click="deleteKeymap" :disabled="!deviceData.hasOwnProperty('hasKeymap') || !deviceData.hasKeymap">Delete</md-menu-item>
+        </md-menu-content>
+      </md-menu>
     </md-card-actions>
+    
   </md-card>
 
 </template>
@@ -57,6 +67,9 @@ export default {
     pairDeviceParent: null,
     removeDeviceParent: null,
     deviceDetailsParent: null,
+    uploadKeymapParent: null,
+    downloadKeymapParent: null,
+    deleteKeymapParent: null,
     deviceData: {},
     disabled: false      
   },
@@ -66,15 +79,32 @@ export default {
       console.log("mounted()", this.deviceData);      
   },
   methods: {
-      pairDevice: async function() {        
-        this.pairDeviceParent(this.deviceData);
-      },
-      removeDevice: async function() {
-        this.removeDeviceParent(this.deviceData);
-      },
-      deviceDetails: async function() {
-        this.deviceDetailsParent(this.deviceData);
-      }
+    pairDevice: async function() {        
+      this.pairDeviceParent(this.deviceData);
+    },
+    removeDevice: async function() {
+      this.removeDeviceParent(this.deviceData);
+    },
+    deviceDetails: async function() {
+      this.deviceDetailsParent(this.deviceData);
+    },
+    onUploadKeymapFileInputChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length)
+        return;         
+      var reader = new FileReader();        
+      reader.onload = (e) => {
+        //console.log(e.target.result);
+        this.uploadKeymapParent(this.deviceData, e.target.result);
+      };
+      reader.readAsText(files[0]);
+    },
+    downloadKeymap: async function() {
+      this.downloadKeymapParent(this.deviceData);
+    },
+    deleteKeymap: async function() {
+      this.deleteKeymapParent(this.deviceData);
+    }
   }
 };
 </script>

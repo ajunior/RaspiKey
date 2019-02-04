@@ -14,6 +14,7 @@
 #include <memory>
 #include <vector>
 #include <linux/limits.h>
+#include "ReportFilter.h"
 
 // Global definitions
 //
@@ -26,7 +27,7 @@
 
 #define LOG_FILE_PATH "/tmp/raspikey.log"
 #define DATA_DIR "/data"
-#define VERSION "1.1.0"
+#define VERSION "1.1.1"
 //
 //
 
@@ -111,8 +112,6 @@ namespace Globals
 	extern bool g_dwSwapFnCtrl;
 	extern std::string g_strSerial;	
 	extern char g_szModuleDir[PATH_MAX];
-	//extern DevDesc g_devDesc[13];
-
 	//
 	//
 
@@ -143,12 +142,9 @@ namespace Globals
 
 	int GetBtHidBatteryCapacity(const std::string& btaddress);
 	long GetUptime();
-	bool SetPiLedState(bool state, const char* const led = "0");
+	bool SetPiLedState(bool state, const char* led = "0");	
 
-	//bool GetInputDeviceInfo(const char* const szDeviceName, int& vid, int& pid, ModelId& modelId);
-
-
-	//
+	// 
 	//
 }
 

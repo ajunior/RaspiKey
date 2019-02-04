@@ -32,6 +32,7 @@ struct CustomMiddleware
 	void after_handle(crow::request& req, crow::response& res, context& ctx)
 	{
 		res.add_header("Access-Control-Allow-Origin", "*");
+		res.add_header("Access-Control-Allow-Methods", "*");
 	}
 };
 #endif

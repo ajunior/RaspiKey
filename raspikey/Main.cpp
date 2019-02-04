@@ -31,9 +31,8 @@
 #include "Logger.h"
 #include "GenericReportFilter.h"
 #include "Main.h"
-#include "json.hpp"
+#include "KeyMapReportFilter.h"
 #include "JsonTypes.h"
-#include "KeyMap.h"
 
 using namespace std;
 
@@ -116,8 +115,7 @@ void OpenDevicesLoop()
 {
 	while (!g_ExitRequested)
 	{
-		DeviceDescriptors fds;
-		memset(&fds, 0, sizeof(fds));
+		DeviceDescriptors fds = { };
 
 		// Open devices
 		if (OpenKbDevice(fds) < 0)
@@ -125,6 +123,7 @@ void OpenDevicesLoop()
 			sleep(1);
 			continue;
 		}
+		
 		if (OpenHidgDevice(fds.hidgFd) < 0)
 		{
 			close(fds.inputEventFd);
@@ -162,10 +161,10 @@ void OpenDevicesLoop()
 		if (keyMapFs.good()) // Do we have a keymap file?
 		{
 			// Attempt to load
-			auto keyMap = new KeyMap();
+			auto keyMap = new KeyMapReportFilter();
 			try
 			{
-				keyMap->LoadKeyMapFile(strPath.c_str());
+				keyMap->LoadKeyMapFile(strPath);
 				g_pReportFilters[1] = keyMap;
 			}
 			catch (const exception& m)
@@ -360,16 +359,24 @@ int OpenHidgDevice(int& hidgFd)
 	return 0;
 }
 
-bool DeleteKeyMap(const char* addr)
+std::string GetKeymapFilePath(const std::string& addr)
 {
-	string keyMapPath = Globals::FormatString(DATA_DIR "/%s.keymap", addr);
+	string addrUpper = addr;
+	std::transform(addrUpper.begin(), addrUpper.end(), addrUpper.begin(), ::toupper);
 
-	ifstream ifs(keyMapPath);
+	return Globals::FormatString(DATA_DIR "/%s.keymap", addrUpper.c_str());
+}
+
+bool DeleteKeyMap(const std::string& addr)
+{
+	const string strPath = GetKeymapFilePath(addr);
+
+	ifstream ifs(strPath);
 	if (!ifs.good())
 		return false;
 	ifs.close();
 
-	if (remove(keyMapPath.c_str()) != 0)
+	if (remove(strPath.c_str()) != 0)
 		return false;
 
 	if (g_pReportFilters[1])
@@ -379,15 +386,21 @@ bool DeleteKeyMap(const char* addr)
 	return true;
 }
 
-string GetKeyMap(const char* addr)
-{
-	const string szPath = Globals::FormatString(DATA_DIR "/%s.keymap", addr);
+bool HasKeyMap(const std::string& addr)
+{	
+	const string strPath = GetKeymapFilePath(addr);
 
+	return access(strPath.c_str(), F_OK) != -1;
+}
+
+string GetKeyMap(const std::string& addr)
+{
+	const string strPath = GetKeymapFilePath(addr);
 	ifstream ifs;
-	ifs.open(szPath);
+	ifs.open(strPath);
 	if (!ifs.is_open())
 	{
-		string strErr = Globals::FormatString("Failed to read keymap file: %s", szPath.c_str());
+		string strErr = Globals::FormatString("Failed to read keymap file: %s", strPath.c_str());
 		ErrorMsg(strErr.c_str());
 		throw runtime_error(strErr);
 	}
@@ -400,13 +413,13 @@ string GetKeyMap(const char* addr)
 	return strKeyMap;
 }
 
-void SetKeyMap(const char* addr, const char* szJson)
+void SetKeyMap(const std::string& addr, const std::string& json)
 {
-	// Validate keymap json
-	auto keyMap = new KeyMap();
+	// Validate json payload
+	auto keyMap = new KeyMapReportFilter();
 	try
 	{
-		keyMap->LoadKeyMap(szJson);
+		keyMap->LoadKeyMap(json);
 	}
 	catch (const exception& m)
 	{
@@ -415,7 +428,7 @@ void SetKeyMap(const char* addr, const char* szJson)
 	}
 
 	// Write validated keymap file
-	const string strPath = Globals::FormatString(DATA_DIR "/%s.keymap", addr);
+	const string strPath = GetKeymapFilePath(addr);
 	ofstream ofs;
 	ofs.open(strPath);
 	if (!ofs.is_open())
@@ -423,7 +436,7 @@ void SetKeyMap(const char* addr, const char* szJson)
 		delete keyMap;
 		throw runtime_error("Failed to write keymap file");
 	}
-	ofs << szJson;
+	ofs << json;
 	ofs.close();
 
 	// Set new keymap
@@ -431,6 +444,7 @@ void SetKeyMap(const char* addr, const char* szJson)
 		delete g_pReportFilters[1];
 	g_pReportFilters[1] = keyMap;
 }
+
 
 
 

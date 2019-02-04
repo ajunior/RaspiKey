@@ -16,7 +16,7 @@
       <div class="main-control">
         <div class="md-headline"><md-icon>settings</md-icon> Main Control</div>
 
-        <md-switch v-model="discovery" :disabled="busy" @change="changeDiscovery()"><md-icon>bluetooth_searching</md-icon> Bluetooth Keyboards Discovery</md-switch>
+        <md-switch v-model="discovery" :disabled="busy" @change="changeDiscovery()"><md-icon>bluetooth_searching</md-icon> Bluetooth Discovery Mode</md-switch>
 
         <div class="md-title">State</div>     
         <div class="md-caption">Save or factory Reset the current RaspiKey state. <br/>For example you will need to Save state when you pair a new keyboard and you'd want to keep it paired them after RaspiKey restarts.</div>         
@@ -41,7 +41,14 @@
       <div class="md-caption">View and manage discovered Bluetooth keyboards.</div>
 
       <div class="device-cards" v-if="connected">
-        <DeviceCard v-for="device in devices" :key="device.address" :deviceData="device" :pairDeviceParent="pairDevice" :removeDeviceParent="removeDevice" :deviceDetailsParent="deviceDetails" :disabled="busy"/>
+        <DeviceCard v-for="device in devices" :key="device.address" :deviceData="device" 
+          :pairDeviceParent="pairDevice" 
+          :removeDeviceParent="removeDevice" 
+          :deviceDetailsParent="deviceDetails" 
+          :uploadKeymapParent="uploadKeymap"    
+          :downloadKeymapParent="downloadKeymap"
+          :deleteKeymapParent="deleteKeymap"     
+          :disabled="busy"/>
       </div>
 
     </md-content>
@@ -59,6 +66,8 @@
   import ModalDialog from './components/ModalDialog.vue'
   import ApiService from './api-service'
   import Util from './util'
+  import FileSaver from 'file-saver';
+  
 
   export default {
     name: 'app',
@@ -207,8 +216,40 @@
             innerHtml += "<strong>" + k + "</strong>: " + result[k] + "<br/>";
         });
 
-        await this.$refs.modalDialog1.showModal(innerHtml, deviceData.name, ModalDialog.Ok, true);
-        
+        await this.$refs.modalDialog1.showModal(innerHtml, deviceData.name, ModalDialog.Ok, true);        
+      },
+      uploadKeymap: async function(deviceData, data) {
+        try
+        {
+          await ApiService.setKeymap(deviceData.address, data);
+        }
+        catch (e){
+          console.error(e);
+          await this.$refs.modalDialog1.showModal(`Failed to upload keymap: ${e.message}`, "Error");
+        }
+      },
+      downloadKeymap: async function(deviceData) {     
+        try
+        {
+          let data = await ApiService.getKeymap(deviceData.address);
+
+          var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
+          FileSaver.saveAs(blob, `${deviceData.alias} Keymap.json`); 
+        }
+        catch (e){
+          console.error(e);
+          await this.$refs.modalDialog1.showModal(`Failed to get keymap: ${e.message}`, "Error");
+        }
+      },
+      deleteKeymap: async function(deviceData) {
+        try
+        {
+          await ApiService.deleteKeymap(deviceData.address);
+        }
+        catch (e){
+          console.error(e);
+          await this.$refs.modalDialog1.showModal(`Failed to delete keymap: ${e.message}`, "Error");
+        }
       }
     }
   }

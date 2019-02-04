@@ -26,6 +26,7 @@ WebApiServer::WebApiServer()
 
 WebApiServer::~WebApiServer()
 {
+
 }
 
 void WebApiServer::MainThread()
@@ -48,6 +49,7 @@ void WebApiServer::Stop()
 	m_crowApp.stop();
 
 	m_pMainThread->join();
+
 	delete m_pMainThread;
 	m_pMainThread = nullptr;
 }
@@ -101,7 +103,7 @@ void WebApiServer::BuildRoutes()
 		if(retval)
 			return crow::response(500, Globals::FormatString("System command failed with exit code %d", retval));
 
-		return crow::response(200, "{}");
+		return crow::response(200);
 	});
 
 	CROW_ROUTE(m_crowApp, "/delete-data")
@@ -120,13 +122,14 @@ void WebApiServer::BuildRoutes()
 
 		system("/sbin/reboot &");
 
-		return crow::response(200, "{}");
+		return crow::response(200);
 	});
 
 	CROW_ROUTE(m_crowApp, "/info")
 		([]()
 	{
 		nlohmann::json jobj;
+
 		jobj["uptime"] = Globals::FormatString("%ld", Globals::GetUptime());
 		jobj["version"] = VERSION;
 
@@ -150,30 +153,32 @@ void WebApiServer::BuildRoutes()
 		return crow::response(200, strLog);
 	});
 
-	CROW_ROUTE(m_crowApp, "/bt")
-		([](const crow::request& req)
-	{
-		char* val = req.url_params.get("v");
-		try
-		{
-			if (val == nullptr)
-			{
-				nlohmann::json jobj;
-				jobj["v"] = bluetooth::IsStarted() ? "on" : "off";
-				return crow::response(200, jobj.dump());
-			}
-			else if (strcmp(val, "on") == 0)
-				bluetooth::Start();
-			else if (strcmp(val, "off") == 0)
-				bluetooth::Stop();
-		}
-		catch (exception& ex)
-		{
-			return crow::response(500, ex.what());
-		}
+	//CROW_ROUTE(m_crowApp, "/bt")
+	//	([](const crow::request& req)
+	//{
+	//	char* val = req.url_params.get("v");
+	//	try
+	//	{
+	//		if (val == nullptr)
+	//		{
+	//			nlohmann::json jobj;
 
-		return crow::response(200, "{}");
-	});
+	//			jobj["v"] = bluetooth::IsStarted() ? "on" : "off";
+
+	//			return crow::response(200, jobj.dump());
+	//		}
+	//		else if (strcmp(val, "on") == 0)
+	//			bluetooth::Start();
+	//		else if (strcmp(val, "off") == 0)
+	//			bluetooth::Stop();
+	//	}
+	//	catch (exception& ex)
+	//	{
+	//		return crow::response(500, ex.what());
+	//	}
+
+	//	return crow::response(200);
+	//});
 
 	CROW_ROUTE(m_crowApp, "/bt/discovery")
 		([](const crow::request& req)
@@ -184,7 +189,9 @@ void WebApiServer::BuildRoutes()
 			if (val == nullptr)
 			{
 				nlohmann::json jobj;
+
 				jobj["v"] = bluetooth::GetDiscovery() ? "on" : "off";
+
 				return crow::response(200, jobj.dump());
 			}
 			else
@@ -201,7 +208,7 @@ void WebApiServer::BuildRoutes()
 			return crow::response(500, ex.what());
 		}
 
-		return crow::response(200, "{}");
+		return crow::response(200);
 	});
 
 	CROW_ROUTE(m_crowApp, "/bt/devices")
@@ -212,6 +219,7 @@ void WebApiServer::BuildRoutes()
 		for (auto& dev : devs)
 		{
 			nlohmann::json jobj;
+
 			jobj["name"] = dev.Name;
 			jobj["alias"] = dev.Alias;
 			jobj["modalias"] = dev.Modalias;
@@ -226,6 +234,8 @@ void WebApiServer::BuildRoutes()
 				int bcap = Globals::GetBtHidBatteryCapacity(dev.Address);
 				if (bcap >= 0)
 					jobj["battery"] = bcap;
+				
+				jobj["hasKeymap"] = HasKeyMap(dev.Address.c_str());
 			}
 
 			jarray.push_back(jobj);
@@ -258,6 +268,7 @@ void WebApiServer::BuildRoutes()
 			bluetooth::GetDeviceInfo(val, di);
 
 			nlohmann::json jobj;
+
 			jobj["name"] = di.Name;
 			jobj["address"] = di.Address;
 			jobj["alias"] = di.Alias;
@@ -310,7 +321,7 @@ void WebApiServer::BuildRoutes()
 		{
 			bluetooth::ReplyMessage res = bluetooth::EndPairDevice();
 			if(res.Status == bluetooth::ReplyMessageStatus::Success)
-				return crow::response(200, "{}");
+				return crow::response(200);
 
 			return crow::response(500, res.Data.c_str());
 		}
@@ -337,7 +348,7 @@ void WebApiServer::BuildRoutes()
 			return crow::response(500, ex.what());
 		}
 
-		return crow::response(200, "{}");
+		return crow::response(200);
 	});
 
 	CROW_ROUTE(m_crowApp, "/bt/connect")
@@ -357,7 +368,7 @@ void WebApiServer::BuildRoutes()
 			return crow::response(500, ex.what());
 		}
 
-		return crow::response(200, "{}");
+		return crow::response(200);
 	});
 
 	CROW_ROUTE(m_crowApp, "/bt/disconnect")
@@ -377,7 +388,7 @@ void WebApiServer::BuildRoutes()
 			return crow::response(500, ex.what());
 		}
 
-		return crow::response(200, "{}");
+		return crow::response(200);
 	});
 
 	CROW_ROUTE(m_crowApp, "/bt/trust")
@@ -397,11 +408,11 @@ void WebApiServer::BuildRoutes()
 			return crow::response(500, ex.what());
 		}
 
-		return crow::response(200, "{}");
+		return crow::response(200);
 	});
 
 	CROW_ROUTE(m_crowApp, "/keymap")
-		.methods("GET"_method, "POST"_method, "DELETE"_method)
+		.methods("GET"_method, "POST"_method, "DELETE"_method, "OPTIONS"_method)
 		([](const crow::request& req)
 	{
 		try
@@ -419,21 +430,22 @@ void WebApiServer::BuildRoutes()
 
 					return crow::response(200, strKeymap);
 				}
-				catch (exception& ex)
+				catch (const exception& ex)
 				{
 					return crow::response(500, ex.what());
 				}
 			}
 			else if (req.method == "POST"_method)
 			{
-				string szJson = req.body;
+				const string strJson = req.body;
 
 				try
 				{
-					SetKeyMap(addr, szJson.c_str());
+					SetKeyMap(addr, strJson);
 				}
-				catch (exception& ex)
+				catch (const exception& ex)
 				{
+					cout << ex.what() << endl;
 					return crow::response(500, ex.what());
 				}
 			}
@@ -443,13 +455,13 @@ void WebApiServer::BuildRoutes()
 				{
 					DeleteKeyMap(addr);
 				}
-				catch (exception& ex)
+				catch (const exception& ex)
 				{
 					return crow::response(500, ex.what());
 				}
 			}
 		
-			return crow::response(200, "{}");
+			return crow::response(200);
 		}
 		catch (exception& ex)
 		{
