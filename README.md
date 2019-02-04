@@ -1,9 +1,9 @@
 ![raspikey-logo](images/raspikey-logo.png)
-###### Bluetooth to USB Keyboard Adapter
+###### Universal Apple Keyboard Adapter
 
-RaspiKey is an adapter that converts a bluetooth keyboard to a wired USB keyboard. It is particularly useful with the **Apple Wireless** keyboards family because it translates their exotic keymap to that of a **standard PC keyboard** and makes them fully usable on a Windows PC or on other devices (TVs, game consoles, etc.).
+RaspiKey converts a bluetooth keyboard to a standard wired USB keyboard. It is particularly useful with the **Apple Wireless** keyboards because it translates their exotic keymap to that of a **standard PC keyboard** and makes them fully usable on a Windows PC or on other devices (TVs, game consoles, etc.).
 
-RaspiKey requires a [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) board.
+RaspiKey requires a [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) hardware board.
 
 ![raspikey-diagram](images/raspikey-diagram.png)
 
@@ -11,9 +11,9 @@ Features
 --------
 
 * RaspiKey can host **any bluetooth keyboard** but it currently offers full keyboard compatibility (e.g. special multimedia keys support) only for the Apple Wireless (A1314) and the Apple Magic (A1644) keyboard models.
-* **Zero PC software footprint**. It does not require any driver installation or specific software installation on your PC that uses a connected keyboard.
-* **Self-consistent**. It does not require external power. It is self-powered through the PC USB port.
-* It is **inherently secure**. As it is a hardware device, there is no software driver running on your PC that can be hacked, intercepted or compromised compared to a software solution. You even have **full access to the source code** to examine what it does or even build it yourself.
+* **Zero PC software footprint**. It does not require a driver installation or other software.
+* **Self-consistent**. It does not need external power. It is self-powered through the PC USB port.
+* It is **secure**. As it is a hardware device, there is no software driver running on your PC that can be hacked, intercepted or compromised compared to a software solution. You even have **full access to the source code** to examine what it does or even build it yourself.
 * RaspiKey **can be used on anything**; on any device that accepts a standard USB keyboard, not just on Windows PCs. This means that you can connect your Apple keyboard to your smart TV or your game console with full keyboard functionality.
 * It is **robust and responsive**, based on a cut-down, readonly version of the official Raspbian Linux. Even though it runs an OS internally, there is no need for a shutdown process, you just unplug it when you want.
 
