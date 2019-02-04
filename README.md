@@ -31,8 +31,8 @@ Hardware and Software Requirements
 2. A 2GB micro SD card.
 3. Access to a modern Windows PC with the Chrome browser. You need this to build your new RaspiKey device and tether a Bluetooth keyboard to it for the first time.
 
-Building a new RaspiKey Device
----------------------------------
+Setting up a new RaspiKey Device
+--------------------------------
 
 1. Download [Apple Bonjour](https://developer.apple.com/bonjour/) and install it on Windows. The latest 32-bit and 64-bit versions are available [here](https://github.com/samartzidis/RaspiKey/tree/master/utilities).
 2. Download and install [Etcher](https://etcher.io/).
@@ -43,10 +43,10 @@ Building a new RaspiKey Device
 7. The Pi will boot and continue the setup. This process should last about 3-4 minutes. You will be able to tell when it's finished when the Raspberry Pi's **green led turns off** (at it stays solid green during the setup process). Once that happens, unplug it from the PC's USB port.
 8. Your new RaspiKey device is now fully configured and ready to use.
 
-RaspiKey Usage
---------------
+RaspiKey Use
+------------
 1. Plug RaspiKey to a PC.
-2. Wait for about 10 seconds for it to start and open Chrome at **[http://raspikey.local](http://raspikey.local)**. 
+2. Wait for about 10 seconds for it to start and open Chrome or Firefox (Microsoft Edge is not supported) at **[http://raspikey.local](http://raspikey.local)**. 
 3. Use the configuration page to discover and connect a Bluetooth keyboard to it. Once the keyboard is connected, it will be usable on this PC directly or on anywhere else you plug RaspiKey to. You do not need to reconfigure RaspiKey to plug it in and use it elsewhere.
 
 
