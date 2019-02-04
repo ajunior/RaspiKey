@@ -1,5 +1,5 @@
 ![raspikey-logo](images/raspikey-logo.png)
-###### Universal Apple Keyboard Adapter
+###### Universal Apple Keyboard USB Adapter
 
 RaspiKey converts a bluetooth keyboard to a standard wired USB keyboard. It is particularly useful with the **Apple Wireless** keyboards because it translates their exotic keymap to that of a **standard PC keyboard** and makes them fully usable on a Windows PC or on other devices (TVs, game consoles, etc.).
 
