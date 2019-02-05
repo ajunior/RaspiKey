@@ -36,8 +36,6 @@ static void from_json(const nlohmann::json& j, KeyMapping& p)
 
 static void to_json(nlohmann::json& j, const KeyMapping& p)
 {
-	//j = nlohmann::json::array();
-	
 	JsonArrayPushKeyMappingValue(j, p.imod);
 	JsonArrayPushKeyMappingValue(j, p.ikey);
 	JsonArrayPushKeyMappingValue(j, p.omod);
@@ -56,7 +54,7 @@ KeyMapReportFilter::~KeyMapReportFilter()
 
 size_t KeyMapReportFilter::ProcessInputReport(uint8_t* buf, size_t len)
 {
-	if (buf[0] != 1 || len < 9)
+	if (buf[0] != 1 || len < 9 || m_keyMap.empty())
 		return len;
 
 	uint8_t& mod = buf[1];
