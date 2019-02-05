@@ -14,18 +14,18 @@
 
     <md-content class="md-elevation-1">
       <div class="main-control">
-        <div class="md-headline"><md-icon>settings</md-icon> Main Control</div>
+        <div class="md-headline"><md-icon>settings</md-icon> RaspiKey Control</div>
 
         <md-switch v-model="discovery" :disabled="busy" @change="changeDiscovery()"><md-icon>bluetooth_searching</md-icon> Bluetooth Discovery Mode</md-switch>
 
-        <div class="md-title">State</div>     
-        <div class="md-caption">Save or factory Reset the current RaspiKey state. <br/>For example you will need to Save state when you pair a new keyboard and you'd want to keep it paired them after RaspiKey restarts.</div>         
+        <div class="md-title"> State</div>     
+        <div class="md-caption">Save or factory reset the current RaspiKey system state. <br/>You will need to save state when you pair a new keyboard and you'd want to keep it paired them after RaspiKey restarts.</div>         
         <md-button class="md-raised md-primary" v-on:click="saveState()" :disabled="!connected"><md-icon>save</md-icon> Save</md-button>
         <md-button class="md-raised md-accent" v-on:click="resetState()" :disabled="!connected"><md-icon>delete</md-icon> Reset</md-button>
 
-        <div class="md-title">Details</div>
+        <div class="md-title">RaspiKey Status</div>
 
-        <div class="md-body-2">Status:
+        <div class="md-body-2">Connection:
           <span class="md-body-1" v-if="connected"><md-icon style="color: #14d100">usb</md-icon> Connected.</span>
           <span class="md-body-1" v-if="!connected"><md-icon>usb</md-icon> Connecting...</span>
         </div>

@@ -55,7 +55,7 @@ KeyMapReportFilter::~KeyMapReportFilter()
 size_t KeyMapReportFilter::ProcessInputReport(uint8_t* buf, size_t len)
 {
 	if (buf[0] != 1 || len < 9 || m_keyMap.empty())
-		return len;
+		return len; 
 
 	uint8_t& mod = buf[1];
 	for (const auto& mapping : m_keyMap)
