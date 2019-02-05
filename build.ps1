@@ -6,6 +6,7 @@ $configuration="Release"
 
 try 
 {
+    Remove-Item -Force -Recurse -Path .\build
 
     Set-Location $PSScriptRoot\raspikey
     & $msbuild_path raspikey.sln /property:Configuration=$configuration /property:Platform=$platform
