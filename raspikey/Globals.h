@@ -27,7 +27,7 @@
 
 #define LOG_FILE_PATH "/tmp/raspikey.log"
 #define DATA_DIR "/data"
-#define VERSION "1.2.1"
+#define VERSION "1.2.2"
 //
 //
 
