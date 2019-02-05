@@ -14,13 +14,13 @@
 
 using namespace std;
 
-CLogger& CLogger::Instance()
+Logger& Logger::Instance()
 {
-	static CLogger inst;
+	static Logger inst;
 	return inst;
 }
 
-CLogger::CLogger()
+Logger::Logger()
 {
 	m_filePath = LOG_FILE_PATH;
 	OpenLogFile();
@@ -28,30 +28,30 @@ CLogger::CLogger()
 	m_logCount = GetFileSize(m_filePath);
 }
 
-CLogger::~CLogger()
+Logger::~Logger()
 {
 	CloseLogFile();
 }
 
-void CLogger::OpenLogFile()
+void Logger::OpenLogFile()
 {
 	m_logStream.open(m_filePath, fstream::out | fstream::app);
 }
 
-void CLogger::CloseLogFile()
+void Logger::CloseLogFile()
 {
 	if (m_logStream.is_open())
 		m_logStream.close();
 }
 
-long CLogger::GetFileSize(const std::string& filename) const
+long Logger::GetFileSize(const std::string& filename) const
 {
 	struct stat stat_buf;
 	int rc = stat(filename.c_str(), &stat_buf);
 	return rc == 0 ? stat_buf.st_size : -1;
 }
 
-void CLogger::FileLog(const string& msg)
+void Logger::FileLog(const string& msg)
 {
 	lock_guard<mutex> lck(m_logMutex);
 
@@ -71,7 +71,7 @@ void CLogger::FileLog(const string& msg)
 	m_logCount += msg.length();
 }
 
-void CLogger::Log(const int priority, const char* const file, const int line, const char* const msg)
+void Logger::Log(const int priority, const char* const file, const int line, const char* const msg)
 {
 	string strPriority = "LOG";
 	switch (priority)

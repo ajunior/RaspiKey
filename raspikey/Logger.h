@@ -8,16 +8,16 @@
 #include <mutex>
 #include <fstream>
 
-class CLogger
+class Logger
 {
 public:
-	static CLogger& Instance();
+	static Logger& Instance();
 	
 	void Log(const int priority, const char* const file, const int line, const char* const msg);
 
 protected:
-	CLogger();
-	~CLogger();
+	Logger();
+	~Logger();
 
 private:
 	long GetFileSize(const std::string& filename) const;
@@ -36,16 +36,16 @@ private:
 //
 #if !defined(NDEBUG) // DEBUG
 #define DbgMsg(...) \
-	CLogger::Instance().Log(LOG_DEBUG, __FILE__, __LINE__, Globals::FormatString(__VA_ARGS__).c_str() );
+	Logger::Instance().Log(LOG_DEBUG, __FILE__, __LINE__, Globals::FormatString(__VA_ARGS__).c_str() );
 #else // RELEASE
 #define DbgMsg(...)	
 #endif
 
 #define InfoMsg(...) \
-	CLogger::Instance().Log(LOG_INFO, __FILE__, __LINE__, Globals::FormatString(__VA_ARGS__).c_str() );
+	Logger::Instance().Log(LOG_INFO, __FILE__, __LINE__, Globals::FormatString(__VA_ARGS__).c_str() );
 
 #define ErrorMsg(...) \
-	CLogger::Instance().Log(LOG_ERR, __FILE__, __LINE__, Globals::FormatString(__VA_ARGS__).c_str() );
+	Logger::Instance().Log(LOG_ERR, __FILE__, __LINE__, Globals::FormatString(__VA_ARGS__).c_str() );
 //
 //
 
