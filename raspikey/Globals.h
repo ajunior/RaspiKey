@@ -27,7 +27,7 @@
 
 #define LOG_FILE_PATH "/tmp/raspikey.log"
 #define DATA_DIR "/data"
-#define VERSION "1.1.1"
+#define VERSION "1.1.2"
 //
 //
 
@@ -107,10 +107,7 @@ namespace Globals
 	//
 
 	// Global variables
-	//
-	extern bool g_dwSwapAltCmd;
-	extern bool g_dwSwapFnCtrl;
-	extern std::string g_strSerial;	
+	//	
 	extern char g_szModuleDir[PATH_MAX];
 	//
 	//

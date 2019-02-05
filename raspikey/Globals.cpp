@@ -25,9 +25,7 @@
 using namespace std;
 
 namespace Globals
-{
-	bool g_dwSwapAltCmd = false;
-	bool g_dwSwapFnCtrl = true;
+{	
 	char g_szModuleDir[PATH_MAX];	
 
 	//DevDesc g_devDesc[13] = { 

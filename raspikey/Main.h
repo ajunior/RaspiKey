@@ -37,3 +37,6 @@ bool DeleteKeyMap(const std::string& addr);
 void SetKeyMap(const std::string& addr, const std::string& json);
 std::string GetKeyMap(const std::string& addr);
 
+std::string GetKbSettingsFilePath(const std::string& addr);
+
+

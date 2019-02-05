@@ -7,8 +7,21 @@
 #include "A1644.h"
 #include <iostream> 
 #include "Globals.h"
+#include "Logger.h"
+#include "json.hpp"
 
 using namespace std;
+
+static void from_json(const nlohmann::json& j, A1644Settings& p)
+{
+	p.SwapFnCtrl = j.at("swapFnCtrl").get<bool>();
+	p.SwapAltCmd = j.at("swapAltCmd").get<bool>();
+}
+
+static void to_json(nlohmann::json& j, const A1644Settings& p)
+{
+	j = nlohmann::json{ {"swapFnCtrl", p.SwapFnCtrl}, {"swapAltCmd", p.SwapAltCmd} };
+}
 
 A1644::A1644()
 {
@@ -25,7 +38,7 @@ size_t A1644::ProcessInputReport(uint8_t* buf, size_t len)
 
 	A1644HidReport& inRpt = *reinterpret_cast<A1644HidReport*>(buf);
 
-	if (Globals::g_dwSwapFnCtrl)
+	if (m_Settings.SwapFnCtrl)
 	{
 		//Process LCtrl modifier and translate to FakeFn key
 
@@ -46,7 +59,7 @@ size_t A1644::ProcessInputReport(uint8_t* buf, size_t len)
 		if (inRpt.Special & 0x2) //Fn (translate to LCtrl)
 		{
 			//If we swap Fn and Ctrl
-			if (Globals::g_dwSwapFnCtrl)
+			if (m_Settings.SwapFnCtrl)
 				inRpt.Modifier |= (uint8_t)Globals::HidLCtrlMask; //Set LCtrl modifier
 			else
 				m_FakeFnActive = true;
@@ -54,7 +67,7 @@ size_t A1644::ProcessInputReport(uint8_t* buf, size_t len)
 	}
 
 	//Process optional Alt-Cmd swap
-	if (Globals::g_dwSwapAltCmd)
+	if (m_Settings.SwapAltCmd)
 	{
 		if (inRpt.Modifier & Globals::HidLAltMask)
 		{
@@ -78,27 +91,6 @@ size_t A1644::ProcessInputReport(uint8_t* buf, size_t len)
 			inRpt.Modifier |= (uint8_t)Globals::HidRAltMask;
 		}
 	}
-
-	/*
-	//Swap key below ESC (0x64) and key to the right of LShift (0x35)
-	uint8_t swaps[] = { 
-		0x64, 0x35, 
-		0x35, 0x64 
-	};
-	for(int k = 0; k < 6; k++)
-	{
-		uint8_t* srcKeys = &inRpt.Key1;
-		uint8_t& srcKey = srcKeys[k];
-		for (size_t j = 0; j <= sizeof(swaps) / 2; j += 2)
-		{
-			if (srcKey == swaps[j])
-			{
-				srcKey = swaps[j + 1];
-				break;
-			}
-		}
-	}
-	*/
 
 	//Is this a break code for a previously pressed multimedia key?
 	if (m_MultimediaKeyActive && !inRpt.Key1)
@@ -195,6 +187,26 @@ size_t A1644::ProcessOutputReport(uint8_t* buf, size_t len)
 		return 0;
 
 	return len;
+}
+
+void A1644::SetSettings(std::string settings)
+{
+	try
+	{
+		auto jsondoc = nlohmann::json::parse(settings);
+		m_Settings = jsondoc.get<A1644Settings>();
+	}
+	catch (const exception& m)
+	{
+		ErrorMsg("Failed to parse settings data: %s", m.what());
+		throw;
+	}
+}
+
+std::string A1644::GetSettings()
+{
+	nlohmann::json j = m_Settings;
+	return j.dump();
 }
 
 

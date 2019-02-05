@@ -95,7 +95,6 @@
     <ClInclude Include="GenericReportFilter.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="json.hpp" />
-    <ClInclude Include="JsonTypes.h" />
     <ClInclude Include="KeyMapReportFilter.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Main.h" />

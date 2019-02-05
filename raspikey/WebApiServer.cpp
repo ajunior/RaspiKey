@@ -236,6 +236,11 @@ void WebApiServer::BuildRoutes()
 					jobj["battery"] = bcap;
 				
 				jobj["hasKeymap"] = HasKeyMap(dev.Address.c_str());
+
+				nlohmann::json jobjSettings;
+				jobjSettings["swapFnCtrl"] = true;
+				jobjSettings["swapAltCmd"] = false;
+				jobj["settings"] = jobjSettings;
 			}
 
 			jarray.push_back(jobj);
@@ -461,6 +466,53 @@ void WebApiServer::BuildRoutes()
 				}
 			}
 		
+			return crow::response(200);
+		}
+		catch (exception& ex)
+		{
+			return crow::response(500, ex.what());
+		}
+	});
+
+	CROW_ROUTE(m_crowApp, "/settings")
+		.methods("GET"_method, "POST"_method, "OPTIONS"_method)
+		([](const crow::request& req)
+	{
+		try
+		{
+			char* addr = req.url_params.get("v");
+			string msg = "Expected a query parameter ...?v=[bluetooth device address] e.g. ...?v=0C:D7:46:E4:FF:29";
+			if (addr == nullptr)
+				return crow::response(400, msg);
+
+			if (req.method == "GET"_method)
+			{
+				try
+				{
+					//const string settings = GetKbSettings(addr);
+
+					//return crow::response(200, settings);
+				}
+				catch (const exception& ex)
+				{
+					return crow::response(500, ex.what());
+				}
+			}
+			else if (req.method == "POST"_method)
+			{
+				const string strJson = req.body;
+
+				try
+				{
+					//SetKbSettings(addr, strJson);
+				}
+				catch (const exception& ex)
+				{
+					cout << ex.what() << endl;
+					return crow::response(500, ex.what());
+				}
+			}
+
 			return crow::response(200);
 		}
 		catch (exception& ex)

@@ -32,7 +32,6 @@
 #include "GenericReportFilter.h"
 #include "Main.h"
 #include "KeyMapReportFilter.h"
-#include "JsonTypes.h"
 
 using namespace std;
 
@@ -155,16 +154,44 @@ void OpenDevicesLoop()
 			g_pReportFilters[0] = new GenericReportFilter(); 
 		}
 
-		// Load keymap if exists
-		string strPath = Globals::FormatString(DATA_DIR "/%s.keymap", strDevId.c_str());
+		/*
+		// Set KB settings if file exists
+		string strPath = GetKbSettingsFilePath(strDevId);
+		ifstream settingsFs(strPath);
+		if (settingsFs.good()) // Do we have a settings file?
+		{
+			stringstream ss;
+			ss << settingsFs.rdbuf();
+			const string strJson = ss.str();
+			settingsFs.close();
+
+			try
+			{
+				g_pReportFilters[0]->SetSettings(strJson);
+			}
+			catch (const exception& m)
+			{
+				ErrorMsg(m.what());
+			}
+		}
+		*/
+		
+		// Set keymap if file exists
+		string strPath = GetKeymapFilePath(strDevId);
 		ifstream keyMapFs(strPath);
 		if (keyMapFs.good()) // Do we have a keymap file?
 		{
-			// Attempt to load
 			auto keyMap = new KeyMapReportFilter();
 			try
 			{
-				keyMap->LoadKeyMapFile(strPath);
+				// Attempt to load
+				stringstream ss;
+				ss << keyMapFs.rdbuf();
+				const string strJson = ss.str();
+				keyMapFs.close();
+
+				keyMap->SetSettings(strJson);
+
 				g_pReportFilters[1] = keyMap;
 			}
 			catch (const exception& m)
@@ -174,6 +201,7 @@ void OpenDevicesLoop()
 				delete keyMap;
 			}
 		}
+		
 
 		// Start forwarding loop with the established devices
 		ForwardingLoop(g_pReportFilters, fds.hidRawFd, fds.hidgFd);
@@ -419,7 +447,7 @@ void SetKeyMap(const std::string& addr, const std::string& json)
 	auto keyMap = new KeyMapReportFilter();
 	try
 	{
-		keyMap->LoadKeyMap(json);
+		keyMap->SetSettings(json);
 	}
 	catch (const exception& m)
 	{
@@ -444,6 +472,15 @@ void SetKeyMap(const std::string& addr, const std::string& json)
 		delete g_pReportFilters[1];
 	g_pReportFilters[1] = keyMap;
 }
+
+std::string GetKbSettingsFilePath(const std::string& addr)
+{
+	string addrUpper = addr;
+	std::transform(addrUpper.begin(), addrUpper.end(), addrUpper.begin(), ::toupper);
+
+	return Globals::FormatString(DATA_DIR "/%s.settings", addrUpper.c_str());
+}
+
 
 
 

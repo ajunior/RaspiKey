@@ -9,7 +9,6 @@
 #include "ReportFilter.h"
 #include <string>
 #include <vector>
-#include "JsonTypes.h"
 
 class GenericReportFilter : public IReportFilter
 {
@@ -19,5 +18,8 @@ public:
 
 	size_t ProcessInputReport(uint8_t* buf, size_t len) override;
 	size_t ProcessOutputReport(uint8_t* buf, size_t len) override;
+
+	std::string GetSettings() override;
+	void SetSettings(std::string settings) override;
 };
 

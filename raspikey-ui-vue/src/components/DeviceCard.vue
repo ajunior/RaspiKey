@@ -45,10 +45,10 @@
       <md-button class="md-primary" v-on:click="pairDevice()" :disabled="disabled||deviceData.connected||deviceData.paired"><md-icon>bluetooth</md-icon> Pair</md-button>
       <md-button class="md-accent" v-on:click="removeDevice()" :disabled="disabled"><md-icon>delete</md-icon> Remove</md-button>
       <md-button class="md-icon-button" v-on:click="deviceDetails()" :disabled="disabled"><md-icon>info</md-icon><md-tooltip md-delay="300">Info</md-tooltip></md-button>
-      <md-menu >
-        <md-button md-menu-trigger class="md-icon-button"><md-icon>map</md-icon><md-tooltip md-delay="300">Custom Keymap</md-tooltip></md-button>
+      <md-menu>
+        <md-button md-menu-trigger class="md-icon-button" :disabled="disabled||!deviceData.connected"><md-icon>map</md-icon><md-tooltip md-delay="300">Custom Keymap</md-tooltip></md-button>
         <md-menu-content>
-          <input type="file" ref="file" style="display: none" @change="onUploadKeymapFileInputChange">
+          <input type="file" accept=".json" ref="file" style="display: none" @change="onUploadKeymapFileInputChange">
           <md-menu-item class="md-primary" @click="$refs.file.click()">Upload...</md-menu-item>
           <md-menu-item @click="downloadKeymap" :disabled="!deviceData.hasOwnProperty('hasKeymap') || !deviceData.hasKeymap">Download</md-menu-item>
           <md-menu-item @click="deleteKeymap" :disabled="!deviceData.hasOwnProperty('hasKeymap') || !deviceData.hasKeymap">Delete</md-menu-item>

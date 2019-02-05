@@ -52,7 +52,6 @@
     <ClInclude Include="json.hpp" />
     <ClInclude Include="ReportFilter.h" />
     <ClInclude Include="GenericReportFilter.h" />
-    <ClInclude Include="JsonTypes.h" />
     <ClInclude Include="KeyMapReportFilter.h" />
   </ItemGroup>
   <ItemGroup>

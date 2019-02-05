@@ -8,7 +8,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
-#include "JsonTypes.h"
+#include <string>
 
 class IReportFilter
 {
@@ -17,4 +17,7 @@ public:
 
 	virtual size_t ProcessInputReport(uint8_t* buf, size_t len) = 0;
 	virtual size_t ProcessOutputReport(uint8_t* buf, size_t len) = 0;
+
+	virtual std::string GetSettings() = 0;
+	virtual void SetSettings(std::string settings) = 0;
 };

@@ -25,6 +25,12 @@ typedef struct A1644HidReport
 	uint8_t Special;
 } tagA1644HidReport;
 
+typedef struct A1644Settings
+{
+	bool SwapFnCtrl = true;
+	bool SwapAltCmd = false;	
+} tagA1644Settings;
+
 class A1644 : public IReportFilter
 {
 public:
@@ -33,10 +39,16 @@ public:
 
 private:
 	bool m_FakeFnActive = false;
-	bool m_MultimediaKeyActive = false;
+	bool m_MultimediaKeyActive = false;	
+
+protected:
+	A1644Settings m_Settings;
 
 public:	
 	size_t ProcessInputReport(uint8_t* buf, size_t len) override;
 	size_t ProcessOutputReport(uint8_t* buf, size_t len) override;
+
+	std::string GetSettings() override;
+	void SetSettings(std::string settings) override;
 };
 

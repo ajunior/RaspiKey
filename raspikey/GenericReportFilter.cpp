@@ -5,10 +5,6 @@
 //
 
 #include "GenericReportFilter.h"
-#include "Logger.h"
-#include <fstream>
-#include <sstream>
-#include "JsonTypes.h"
 
 using namespace std;
 
@@ -30,4 +26,14 @@ size_t GenericReportFilter::ProcessInputReport(uint8_t* buf, size_t len)
 size_t GenericReportFilter::ProcessOutputReport(uint8_t* buf, size_t len)
 {
 	return len;
+}
+
+void GenericReportFilter::SetSettings(std::string settings)
+{
+
+}
+
+std::string GenericReportFilter::GetSettings()
+{
+	return string();
 }
