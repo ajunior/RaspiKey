@@ -37,8 +37,8 @@
         </div>
 
         <div class="md-layout-item" v-if="deviceData.settings != null">          
-          <md-switch class="md-primary" v-model="deviceData.settings.swapFnCtrl" :disabled="disabled" @change="changeSettings()">Swap Fn-Ctrl</md-switch>
-          <md-switch class="md-primary" v-model="deviceData.settings.swapAltCmd" :disabled="disabled" @change="changeSettings()">Swap Alt-Cmd</md-switch>
+          <md-switch class="md-switch-custom" v-model="deviceData.settings.swapFnCtrl" :disabled="disabled" @change="changeSettings()">Swap Fn-Ctrl</md-switch>
+          <md-switch class="md-switch-custom" v-model="deviceData.settings.swapAltCmd" :disabled="disabled" @change="changeSettings()">Swap Alt-Cmd</md-switch>
         </div>
 
       </div>
@@ -119,6 +119,12 @@ export default {
 };
 </script>
 
+<style scoped>
+.md-switch-custom {
+  margin: 0px !important;  
+}
+</style>
+
 <style>
 .md-card {
   width: 360px;
@@ -126,8 +132,8 @@ export default {
   display: inline-block;
   vertical-align: top;
 }
-.md-switch {
-  margin: 0px !important;
+.md-layout-item {
+  padding: 5px;
 }
 .md-progress-bar {
     height: 10px !important;

@@ -40,7 +40,7 @@ bool g_ExitRequested = false;
 IReportFilter* g_pReportFilters[3] = { nullptr };
 
 int main(int argc, char** argv)
-{
+{	
 	InfoMsg("RaspiKey " VERSION ".");
 
 	// Get RaspiKey binary "working" dir
@@ -184,7 +184,7 @@ void OpenDevicesLoop()
 			{
 				ErrorMsg(m.what());
 			}
-		}
+		}		
 
 		// Start forwarding loop with the established devices
 		ForwardingLoop(g_pReportFilters, fds.hidRawFd, fds.hidgFd);
