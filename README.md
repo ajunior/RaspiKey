@@ -11,14 +11,15 @@ Features
 --------
 
 * RaspiKey can host **any bluetooth keyboard** but it currently offers full keyboard compatibility (e.g. special multimedia keys support) only for the Apple Wireless (A1314) and the Apple Magic (A1644) keyboard models.
-* **Zero PC software footprint**. It does not require a driver installation or other software.
+* **Zero software footprint**. It does not require a driver installation on the target host or other software.
 * **Self-consistent**. It does not need external power. It is self-powered through the PC USB port.
 * It is **secure**. As it is a hardware device, there is no software driver running on your PC that can be hacked, intercepted or compromised compared to a software solution. You even have **full access to the source code** to examine what it does or even build it yourself.
 * RaspiKey **can be used on anything**; on any device that accepts a standard USB keyboard, not just on Windows PCs. This means that you can connect your Apple keyboard to your smart TV or your game console with full keyboard functionality.
-* It is **robust and responsive**, based on a cut-down, readonly version of the official Raspbian Linux. Even though it runs an OS internally, there is no need for a shutdown process, you just unplug it when you want.
+* It is based on a cut-down, readonly version of the official Raspbian Linux. Even though it runs an OS internally, there is no need for a shutdown process, you just unplug it when you want.
+* Supports custom user keymaps, allowing to customise any key.
 
-Screenshots
------------
+Images
+------
 
 <a href="images/shot1.png"><img width="100" height="100" src="images/shot1_tn.png"></a>
 <a href="images/shot4.jpg"><img width="100" height="100" src="images/shot4_tn.jpg"></a>
