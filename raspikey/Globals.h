@@ -27,7 +27,7 @@
 
 #define LOG_FILE_PATH "/tmp/raspikey.log"
 #define DATA_DIR "/data"
-#define VERSION "1.1.2"
+#define VERSION "1.2.1"
 //
 //
 
@@ -137,9 +137,12 @@ namespace Globals
 	std::string& Rtrim(std::string &s);
 	std::string& Trim(std::string &s);
 
-	int GetBtHidBatteryCapacity(const std::string& btaddress);
+	bool GetBtHidBatteryCapacity(const std::string& btaddress, int& capacity);
 	long GetUptime();
-	bool SetPiLedState(bool state, const char* led = "0");	
+	bool SetPiLedState(bool state, const char* led = "0");
+	bool FileReadAllText(const std::string& path, std::string& text);
+	bool FileWriteAllText(const std::string& path, const std::string& text);
+	bool DeleteFile(const std::string& path);
 
 	// 
 	//

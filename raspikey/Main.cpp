@@ -133,9 +133,9 @@ void OpenDevicesLoop()
 		}
 
 		// Get the unique identifier (bluetooth address) for opened device
-		string strDevId = fds.inputEventDevUniq;
-		std::transform(strDevId.begin(), strDevId.end(), strDevId.begin(), ::toupper);
-		InfoMsg("Device unique identifier: %s", strDevId.c_str());
+		string devId = fds.inputEventDevUniq;
+		std::transform(devId.begin(), devId.end(), devId.begin(), ::toupper);
+		InfoMsg("Device unique identifier: %s", devId.c_str());
 
 		// Create the correct keyboard device IReportFilter		
 		if (fds.inputEventDevName == A1644_DEV_NAME)
@@ -153,55 +153,38 @@ void OpenDevicesLoop()
 			InfoMsg("Using Generic report filter");
 			g_pReportFilters[0] = new GenericReportFilter(); 
 		}
-
-		/*
-		// Set KB settings if file exists
-		string strPath = GetKbSettingsFilePath(strDevId);
-		ifstream settingsFs(strPath);
-		if (settingsFs.good()) // Do we have a settings file?
+		
+		// Set keyboard filter settings if file exists
+		string path = GetSettingsFilePath(devId);
+		string settings;
+		if (Globals::FileReadAllText(path, settings))
 		{
-			stringstream ss;
-			ss << settingsFs.rdbuf();
-			const string strJson = ss.str();
-			settingsFs.close();
-
 			try
 			{
-				g_pReportFilters[0]->SetSettings(strJson);
+				g_pReportFilters[0]->SetSettings(settings);
 			}
 			catch (const exception& m)
 			{
 				ErrorMsg(m.what());
 			}
 		}
-		*/
-		
-		// Set keymap if file exists
-		string strPath = GetKeymapFilePath(strDevId);
-		ifstream keyMapFs(strPath);
-		if (keyMapFs.good()) // Do we have a keymap file?
+
+		// Create KeyMapReportFilter IReportFilter
+		g_pReportFilters[1] = new KeyMapReportFilter();
+
+		// Set keymap filter settings if file exists
+		path = GetKeymapFilePath(devId);
+		if (Globals::FileReadAllText(path, settings))
 		{
-			auto keyMap = new KeyMapReportFilter();
 			try
 			{
-				// Attempt to load
-				stringstream ss;
-				ss << keyMapFs.rdbuf();
-				const string strJson = ss.str();
-				keyMapFs.close();
-
-				keyMap->SetSettings(strJson);
-
-				g_pReportFilters[1] = keyMap;
+				g_pReportFilters[1]->SetSettings(settings);
 			}
 			catch (const exception& m)
 			{
 				ErrorMsg(m.what());
-
-				delete keyMap;
 			}
 		}
-		
 
 		// Start forwarding loop with the established devices
 		ForwardingLoop(g_pReportFilters, fds.hidRawFd, fds.hidgFd);
@@ -387,98 +370,83 @@ int OpenHidgDevice(int& hidgFd)
 	return 0;
 }
 
-std::string GetKeymapFilePath(const std::string& addr)
+std::string GetKeymapFilePath(const std::string& devId)
 {
-	string addrUpper = addr;
+	string addrUpper = devId;
 	std::transform(addrUpper.begin(), addrUpper.end(), addrUpper.begin(), ::toupper);
 
 	return Globals::FormatString(DATA_DIR "/%s.keymap", addrUpper.c_str());
 }
 
-bool DeleteKeyMap(const std::string& addr)
+std::string GetSettingsFilePath(const std::string& devId)
 {
-	const string strPath = GetKeymapFilePath(addr);
+	string addrUpper = devId;
+	std::transform(addrUpper.begin(), addrUpper.end(), addrUpper.begin(), ::toupper);
 
-	ifstream ifs(strPath);
-	if (!ifs.good())
-		return false;
-	ifs.close();
-
-	if (remove(strPath.c_str()) != 0)
-		return false;
-
-	if (g_pReportFilters[1])
-		delete g_pReportFilters[1];
-	g_pReportFilters[1] = nullptr;
-
-	return true;
+	return Globals::FormatString(DATA_DIR "/%s.settings", addrUpper.c_str());
 }
 
-bool HasKeyMap(const std::string& addr)
+void DeleteKeyMap(const std::string& devId)
+{
+	const string path = GetKeymapFilePath(devId);
+
+	Globals::DeleteFile(path);
+	g_pReportFilters[1]->SetSettings("");	
+}
+
+bool HasKeyMap(const std::string& devId)
 {	
-	const string strPath = GetKeymapFilePath(addr);
+	const string path = GetKeymapFilePath(devId);
 
-	return access(strPath.c_str(), F_OK) != -1;
+	return access(path.c_str(), F_OK) != -1;
 }
 
-string GetKeyMap(const std::string& addr)
+string GetKeyMap(const std::string& devId)
 {
-	const string strPath = GetKeymapFilePath(addr);
-	ifstream ifs;
-	ifs.open(strPath);
-	if (!ifs.is_open())
-	{
-		string strErr = Globals::FormatString("Failed to read keymap file: %s", strPath.c_str());
-		ErrorMsg(strErr.c_str());
-		throw runtime_error(strErr);
-	}
-
-	stringstream buffer;
-	buffer << ifs.rdbuf();
-	string strKeyMap = buffer.str();
-	ifs.close();
-
-	return strKeyMap;
+	return g_pReportFilters[1]->GetSettings();
 }
 
-void SetKeyMap(const std::string& addr, const std::string& json)
+void SetKeyMap(const std::string& devId, const std::string& json)
 {
-	// Validate json payload
-	auto keyMap = new KeyMapReportFilter();
+	// Will fail if the data is invalid
 	try
 	{
-		keyMap->SetSettings(json);
+		g_pReportFilters[1]->SetSettings(json);
 	}
 	catch (const exception& m)
 	{
-		delete keyMap;
+		ErrorMsg("Failed to set keymap: %s", m.what());
 		throw;
 	}
 
 	// Write validated keymap file
-	const string strPath = GetKeymapFilePath(addr);
-	ofstream ofs;
-	ofs.open(strPath);
-	if (!ofs.is_open())
-	{
-		delete keyMap;
-		throw runtime_error("Failed to write keymap file");
-	}
-	ofs << json;
-	ofs.close();
-
-	// Set new keymap
-	if (g_pReportFilters[1])
-		delete g_pReportFilters[1];
-	g_pReportFilters[1] = keyMap;
+	const string path = GetKeymapFilePath(devId);
+	if (!Globals::FileWriteAllText(path, json))
+		throw runtime_error("Failed to write the keymap file");
 }
 
-std::string GetKbSettingsFilePath(const std::string& addr)
+std::string GetSettings(const std::string& devId)
 {
-	string addrUpper = addr;
-	std::transform(addrUpper.begin(), addrUpper.end(), addrUpper.begin(), ::toupper);
+	return g_pReportFilters[0]->GetSettings();
+}
 
-	return Globals::FormatString(DATA_DIR "/%s.settings", addrUpper.c_str());
+void SetSettings(const std::string& devId, const std::string& json)
+{
+	// Will fail if the data is invalid
+	try
+	{
+		g_pReportFilters[0]->SetSettings(json);
+	}
+	catch (const exception& m)
+	{
+		ErrorMsg("Failed to set device settings: %s", m.what());
+		throw;
+	}
+
+	// Write validated settings file
+	const string path = GetSettingsFilePath(devId);
+	if (!Globals::FileWriteAllText(path, json))
+		throw runtime_error("Failed to write device settings file");
 }
 
 

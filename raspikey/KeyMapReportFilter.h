@@ -17,7 +17,6 @@ class KeyMapReportFilter : public IReportFilter
 {
 protected:
 	std::vector<KeyMapping> m_keyMap;
-	std::string m_strKeymap;
 
 public:
 	KeyMapReportFilter();

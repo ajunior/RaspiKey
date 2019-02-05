@@ -35,9 +35,14 @@
             </span>
           </div>
         </div>
-        <div class="md-layout-item">          
+
+        <div class="md-layout-item" v-if="deviceData.settings != null">          
+          <md-switch class="md-primary" v-model="deviceData.settings.swapFnCtrl" :disabled="disabled" @change="changeSettings()">Swap Fn-Ctrl</md-switch>
+          <md-switch class="md-primary" v-model="deviceData.settings.swapAltCmd" :disabled="disabled" @change="changeSettings()">Swap Alt-Cmd</md-switch>
         </div>
+
       </div>
+
 
     </md-card-content>
 
@@ -45,6 +50,7 @@
       <md-button class="md-primary" v-on:click="pairDevice()" :disabled="disabled||deviceData.connected||deviceData.paired"><md-icon>bluetooth</md-icon> Pair</md-button>
       <md-button class="md-accent" v-on:click="removeDevice()" :disabled="disabled"><md-icon>delete</md-icon> Remove</md-button>
       <md-button class="md-icon-button" v-on:click="deviceDetails()" :disabled="disabled"><md-icon>info</md-icon><md-tooltip md-delay="300">Info</md-tooltip></md-button>
+
       <md-menu>
         <md-button md-menu-trigger class="md-icon-button" :disabled="disabled||!deviceData.connected"><md-icon>map</md-icon><md-tooltip md-delay="300">Custom Keymap</md-tooltip></md-button>
         <md-menu-content>
@@ -54,6 +60,7 @@
           <md-menu-item @click="deleteKeymap" :disabled="!deviceData.hasOwnProperty('hasKeymap') || !deviceData.hasKeymap">Delete</md-menu-item>
         </md-menu-content>
       </md-menu>
+
     </md-card-actions>
     
   </md-card>
@@ -70,6 +77,7 @@ export default {
     uploadKeymapParent: null,
     downloadKeymapParent: null,
     deleteKeymapParent: null,
+    setSettingsParent: null,
     deviceData: {},
     disabled: false      
   },
@@ -94,7 +102,6 @@ export default {
         return;         
       var reader = new FileReader();        
       reader.onload = (e) => {
-        //console.log(e.target.result);
         this.uploadKeymapParent(this.deviceData, e.target.result);
       };
       reader.readAsText(files[0]);
@@ -104,6 +111,9 @@ export default {
     },
     deleteKeymap: async function() {
       this.deleteKeymapParent(this.deviceData);
+    },
+    changeSettings: async function() {
+      this.setSettingsParent(this.deviceData);
     }
   }
 };
@@ -111,10 +121,13 @@ export default {
 
 <style>
 .md-card {
-  width: 320px;
+  width: 360px;
   margin: 4px;
   display: inline-block;
   vertical-align: top;
+}
+.md-switch {
+  margin: 0px !important;
 }
 .md-progress-bar {
     height: 10px !important;

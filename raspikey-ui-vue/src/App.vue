@@ -47,7 +47,8 @@
           :deviceDetailsParent="deviceDetails" 
           :uploadKeymapParent="uploadKeymap"    
           :downloadKeymapParent="downloadKeymap"
-          :deleteKeymapParent="deleteKeymap"     
+          :deleteKeymapParent="deleteKeymap"    
+          :setSettingsParent="setSettings" 
           :disabled="busy"/>
       </div>
 
@@ -249,6 +250,17 @@
         catch (e){
           console.error(e);
           await this.$refs.modalDialog1.showModal(`Failed to delete keymap: ${e.message}`, "Error");
+        }
+      },
+      setSettings: async function(deviceData) {
+        try
+        {
+          let data = JSON.stringify(deviceData.settings);
+          await ApiService.setSettings(deviceData.address, data);
+        }
+        catch (e){
+          console.error(e);
+          await this.$refs.modalDialog1.showModal(`Failed to set device settings: ${e.message}`, "Error");
         }
       }
     }

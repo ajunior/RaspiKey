@@ -32,11 +32,16 @@ void OpenDevicesLoop();
 bool StartServices();
 
 std::string GetKeymapFilePath(const std::string& addr);
-bool HasKeyMap(const std::string& addr);
-bool DeleteKeyMap(const std::string& addr);
-void SetKeyMap(const std::string& addr, const std::string& json);
-std::string GetKeyMap(const std::string& addr);
+std::string GetSettingsFilePath(const std::string& addr);
 
-std::string GetKbSettingsFilePath(const std::string& addr);
+bool HasKeyMap(const std::string& devId);
+void DeleteKeyMap(const std::string& devId);
+void SetKeyMap(const std::string& devId, const std::string& json);
+std::string GetKeyMap(const std::string& devId);
+
+std::string GetSettings(const std::string& devId);
+void SetSettings(const std::string& devId, const std::string& json);
+
+
 
 

@@ -231,16 +231,22 @@ void WebApiServer::BuildRoutes()
 
 			if (dev.Connected)
 			{
-				int bcap = Globals::GetBtHidBatteryCapacity(dev.Address);
-				if (bcap >= 0)
+				int bcap = 0;
+				if (Globals::GetBtHidBatteryCapacity(dev.Address, bcap))
 					jobj["battery"] = bcap;
 				
 				jobj["hasKeymap"] = HasKeyMap(dev.Address.c_str());
 
-				nlohmann::json jobjSettings;
-				jobjSettings["swapFnCtrl"] = true;
-				jobjSettings["swapAltCmd"] = false;
-				jobj["settings"] = jobjSettings;
+				try 
+				{
+					string settings = GetSettings(dev.Address);
+					auto jobj2 = nlohmann::json::parse(settings);
+					jobj["settings"] = jobj2;
+				}
+				catch(const exception& m)
+				{
+					ErrorMsg("Failed to build \"settings\" json section for device: %s", m.what());
+				}
 			}
 
 			jarray.push_back(jobj);
@@ -450,7 +456,6 @@ void WebApiServer::BuildRoutes()
 				}
 				catch (const exception& ex)
 				{
-					cout << ex.what() << endl;
 					return crow::response(500, ex.what());
 				}
 			}
@@ -475,7 +480,7 @@ void WebApiServer::BuildRoutes()
 	});
 
 	CROW_ROUTE(m_crowApp, "/settings")
-		.methods("GET"_method, "POST"_method, "OPTIONS"_method)
+		.methods("POST"_method, "OPTIONS"_method)
 		([](const crow::request& req)
 	{
 		try
@@ -485,30 +490,16 @@ void WebApiServer::BuildRoutes()
 			if (addr == nullptr)
 				return crow::response(400, msg);
 
-			if (req.method == "GET"_method)
-			{
-				try
-				{
-					//const string settings = GetKbSettings(addr);
-
-					//return crow::response(200, settings);
-				}
-				catch (const exception& ex)
-				{
-					return crow::response(500, ex.what());
-				}
-			}
-			else if (req.method == "POST"_method)
+			if (req.method == "POST"_method)
 			{
 				const string strJson = req.body;
 
 				try
 				{
-					//SetKbSettings(addr, strJson);
+					SetSettings(addr, strJson);
 				}
 				catch (const exception& ex)
 				{
-					cout << ex.what() << endl;
 					return crow::response(500, ex.what());
 				}
 			}

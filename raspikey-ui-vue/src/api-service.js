@@ -83,6 +83,11 @@ class ApiService {
         return await this.sendRequest("GET", url);
     }
 
+    async setSettings(address, data) {
+        var url = `${BASE_URL}/settings?v=${address}`;  
+        await this.sendRequest("POST", url, data);
+    }
+
     async sendRequest(method, url, body) {
 
         console.debug(method, url);

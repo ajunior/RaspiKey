@@ -97,7 +97,7 @@ namespace Globals
 		return s_info.uptime;
 	}
 
-	int GetBtHidBatteryCapacity(const string& btaddress)
+	bool GetBtHidBatteryCapacity(const string& btaddress, int& capacity)
 	{
 		string btaddresslower = btaddress;
 		transform(btaddresslower.begin(), btaddresslower.end(), btaddresslower.begin(), ::tolower);
@@ -106,12 +106,12 @@ namespace Globals
 		snprintf(pfad, 128, "/sys/class/power_supply/hid-%s-battery/capacity", btaddresslower.c_str());
 		FILE* f = fopen(pfad, "r");
 		if (f == nullptr)
-			return -1;
-		int ret = 0;
-		fscanf(f, "%d", &ret);
+			return false;
+
+		fscanf(f, "%d", &capacity);		
 		fclose(f);
 
-		return ret;
+		return true;
 	}
 
 	bool SetPiLedState(const bool state, const char* led)
@@ -123,6 +123,54 @@ namespace Globals
 			return false;
 		fprintf(f, "%i", state ? 1 : 0);
 		fclose(f);
+
+		return true;
+	}
+
+	bool FileReadAllText(const string& path, string& text)
+	{
+		ifstream keyMapFs(path);
+		if (!keyMapFs.good())
+			return false;
+
+		try
+		{
+			stringstream ss;
+			ss << keyMapFs.rdbuf();
+			text = ss.str();
+			keyMapFs.close();
+		}
+		catch (const exception& m)
+		{
+			ErrorMsg(m.what());
+			return false;
+		}
+
+		return true;
+	}
+
+	bool FileWriteAllText(const string& path, const string& text)
+	{
+		ofstream ofs;
+		ofs.open(path, fstream::out | fstream::trunc);
+		if (!ofs.is_open())
+			return false;
+		
+		ofs << text;
+		ofs.close();
+
+		return true;
+	}
+
+	bool DeleteFile(const string& path)
+	{
+		ifstream ifs(path);
+		if (!ifs.good())
+			return false;
+		ifs.close();
+
+		if (remove(path.c_str()) != 0)
+			return false;
 
 		return true;
 	}

@@ -18,6 +18,14 @@ uint8_t KeyMappingStrToNum(const nlohmann::basic_json<>& ref)
 	return (uint8_t)std::stoi(str, nullptr, 16);
 }
 
+static void JsonArrayPushKeyMappingValue(nlohmann::json& j, uint8_t val)
+{
+	if (val == NullKeyMapping)
+		j.push_back(nlohmann::detail::value_t::null);
+	else
+		j.push_back(Globals::FormatString("0x%02x", val));
+}
+
 static void from_json(const nlohmann::json& j, KeyMapping& p)
 {
 	p.imod = KeyMappingStrToNum(j.at(0));
@@ -26,11 +34,20 @@ static void from_json(const nlohmann::json& j, KeyMapping& p)
 	p.okey = KeyMappingStrToNum(j.at(3));
 }
 
+static void to_json(nlohmann::json& j, const KeyMapping& p)
+{
+	//j = nlohmann::json::array();
+	
+	JsonArrayPushKeyMappingValue(j, p.imod);
+	JsonArrayPushKeyMappingValue(j, p.ikey);
+	JsonArrayPushKeyMappingValue(j, p.omod);
+	JsonArrayPushKeyMappingValue(j, p.okey);
+}
+
 KeyMapReportFilter::KeyMapReportFilter()
 {
 
 }
-
 
 KeyMapReportFilter::~KeyMapReportFilter()
 {
@@ -74,27 +91,28 @@ size_t KeyMapReportFilter::ProcessOutputReport(uint8_t* buf, size_t len)
 void KeyMapReportFilter::SetSettings(std::string settings)
 {
 	m_keyMap.clear();
-	try
-	{
-		auto jsondoc = nlohmann::json::parse(settings);
 
-		for (auto it = jsondoc.begin(); it != jsondoc.end(); ++it)
+	if (!settings.empty())
+	{
+		auto jobj = nlohmann::json::parse(settings);
+		if (!jobj.is_array())
+			throw runtime_error("A json array was expected");
+
+		for (const auto& it : jobj)
 		{
-			auto keyMapping = it.value().get<KeyMapping>();
+			auto keyMapping = it.get<KeyMapping>();
 			m_keyMap.push_back(keyMapping);
 		}
 	}
-	catch (const exception& m)
-	{
-		ErrorMsg("Failed to parse keymap data: %s", m.what());
-		throw;
-	}
-
-	m_strKeymap = settings;
-	InfoMsg("Successfully loaded keymap");
 }
 
 std::string KeyMapReportFilter::GetSettings()
 {
-	return m_strKeymap;
+	auto jobj = nlohmann::json::array();
+	for (const auto& it : m_keyMap)
+	{
+		jobj.push_back(it);
+	}
+
+	return jobj.dump();
 }
