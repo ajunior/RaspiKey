@@ -112,6 +112,13 @@ Apple Keyboards Keymap
     </tr>
   </table>
 
+Some Custom Keymaps
+-------------------
+A Keymap for the **German** Apple keybord versions so that all keys work as expected is available [here](https://github.com/samartzidis/RaspiKey/tree/master/keymaps/de-keymap.json).
+
+A Keymap for the **UK** and **International English** versions is [here](https://github.com/samartzidis/RaspiKey/tree/master/keymaps/en-uk-keymap.json). This keymap remaps the ~ key to the key below Esc and makes the ~ key bahave a Menu key that normally does not exist.
+
+
 Planned Futures
 ---------------
 
