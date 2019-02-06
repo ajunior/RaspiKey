@@ -52,12 +52,16 @@
       <md-button class="md-icon-button" v-on:click="deviceDetails()" :disabled="disabled"><md-icon>info</md-icon><md-tooltip md-delay="300">Info</md-tooltip></md-button>
 
       <md-menu>
-        <md-button md-menu-trigger class="md-icon-button" :disabled="disabled||!deviceData.connected"><md-icon>map</md-icon><md-tooltip md-delay="300">Custom Keymap</md-tooltip></md-button>
+        <md-button md-menu-trigger class="md-icon-button" :disabled="disabled||!deviceData.connected">
+          <md-icon v-if="!deviceData.hasKeymap">map</md-icon>
+          <md-icon v-if="deviceData.hasKeymap" style="color: #14d100">map</md-icon>
+          <md-tooltip md-delay="300">Custom Keymap</md-tooltip>
+        </md-button>
         <md-menu-content>
           <input type="file" accept=".json" ref="file" style="display: none" @change="onUploadKeymapFileInputChange">
-          <md-menu-item class="md-primary" @click="$refs.file.click()">Upload...</md-menu-item>
-          <md-menu-item @click="downloadKeymap" :disabled="!deviceData.hasOwnProperty('hasKeymap') || !deviceData.hasKeymap">Download</md-menu-item>
-          <md-menu-item @click="deleteKeymap" :disabled="!deviceData.hasOwnProperty('hasKeymap') || !deviceData.hasKeymap">Delete</md-menu-item>
+          <md-menu-item class="md-primary" @click="$refs.file.click()">Set Keymap...</md-menu-item>
+          <md-menu-item @click="downloadKeymap" :disabled="!deviceData.hasOwnProperty('hasKeymap') || !deviceData.hasKeymap">Get Keymap...</md-menu-item>
+          <md-menu-item @click="deleteKeymap" :disabled="!deviceData.hasOwnProperty('hasKeymap') || !deviceData.hasKeymap">Remove Keymap</md-menu-item>
         </md-menu-content>
       </md-menu>
 
