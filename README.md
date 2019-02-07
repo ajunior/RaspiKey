@@ -116,7 +116,7 @@ Some Custom Keymaps
 -------------------
 - A Keymap for the **German** Apple keyboard versions so that all keys work as expected is available [here](https://raw.githubusercontent.com/samartzidis/RaspiKey/master/keymaps/de-keymap.json).
 
-- A Keymap for the **UK** and **International English** versions is [here](https://raw.githubusercontent.com/samartzidis/RaspiKey/master/keymaps/en-uk-keymap.json). This keymap maps the <kbd>~</kbd> key to the key below <kbd>Esc</kbd> and makes the original <kbd>~</kbd> key behave as the Windows <kbd>Menu ▤</kbd> key, that is normally missing.
+- A Keymap for the **UK** and **International English** versions is [here](https://raw.githubusercontent.com/samartzidis/RaspiKey/master/keymaps/en-uk-keymap.json). This keymap maps the <kbd>`</kbd> key to the key below <kbd>Esc</kbd> and makes the original key behave as the Windows <kbd>Menu ▤</kbd> key, that is normally missing.
 
 
 
