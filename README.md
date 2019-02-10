@@ -80,7 +80,10 @@ Apple Keyboards Keymap
     </tr>    
     <tr>
       <td><kbd>⌥ Alt</kbd></td><td><kbd>Cmd</kbd></td>
-    </tr>    
+    </tr>   
+    <tr>
+      <td><kbd>Fn</kbd>+<kbd>[F7]</kbd>...<kbd>[F12]</kbd></td><td>Respective multimedia functions</kbd></td>
+    </tr>
     <tr>
       <td><kbd>Fn</kbd>+<kbd>[F1]</kbd>...<kbd>[F6]</kbd></td><td><kbd>[F13]</kbd>...<kbd>[F18]</kbd></td>
     </tr>
