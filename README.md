@@ -128,7 +128,7 @@ Custom Keymaps
 Planned Futures
 ---------------
 
-*   Support for the latest full-size Apple Magic keyboard.
+*   Support for the full-size Apple Magic keyboard.
 
 ---
 RaspiKey is a free and open-source software effort. If you like it and find it useful, please consider donating
