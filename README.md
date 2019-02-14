@@ -15,7 +15,7 @@ Features
 * It is **secure**. As it is a hardware device, there is no software driver running on your PC that can be hacked, intercepted or compromised compared to a software solution. You have full access to its **source code** to review it, or even build it yourself.
 * It is based on a cut-down, readonly version of the official Raspbian Linux. Even though it runs an OS internally, there is no need for a shutdown process, you just unplug it when you want.
 * RaspiKey supports **Custom Keymaps**, allowing you to customise and remap keyboard keys.
-* No measured impact on keyboard **input latency**. Measurements with the Apple Wireless Keyboard on RaspiKey showed a minimum latency of **12 msec**. This performs as good as the Apple Magic Keyboard does when directly connected to the USB port (that is, no Bluetooth and no RaspiKey device in the middle). For a relative comparison and discussion on keyboard latencies you can look [here](https://danluu.com/keyboard-latency/).
+* No measured impact on keyboard **input latency**. Measurements with the Apple Wireless Keyboard on RaspiKey showed a minimum latency of 12 msec. This performs as good as the Apple Magic Keyboard does when directly connected to the USB port (that is, no Bluetooth and no RaspiKey device in the middle). For a relative comparison and discussion on keyboard latencies you can look [here](https://danluu.com/keyboard-latency/).
 
 
 Images
