@@ -29,7 +29,7 @@ Hardware and Software Requirements
 ----------------------------------
 
 1. A plain [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) board.
-2. A 2GB micro SD card.
+2. A 2GB (or bigger) micro SD card.
 3. Access to a modern Windows PC with the Chrome browser. You need this to build your new RaspiKey device and tether a Bluetooth keyboard to it for the first time.
 
 Setting up a new RaspiKey Device
