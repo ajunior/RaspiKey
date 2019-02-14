@@ -10,14 +10,12 @@ RaspiKey requires a [Raspberry Pi Zero W](https://www.raspberrypi.org/products/r
 Features
 --------
 
-* RaspiKey can host **any bluetooth keyboard** but it currently offers full keyboard compatibility (e.g. special multimedia keys support) only for the Apple Wireless (A1314) and the Apple Magic (A1644) keyboard models.
-* **Zero software footprint**. It does not require a driver installation on the target host or other software.
-* **Self-consistent**. It does not need external power. It is self-powered through the PC USB port.
-* It is **secure**. As it is a hardware device, there is no software driver running on your PC that can be hacked, intercepted or compromised compared to a software solution. You even have **full access to the source code** to examine what it does or even build it yourself.
-* RaspiKey **can be used on anything**; on any device that accepts a standard USB keyboard, not just on Windows PCs. This means that you can connect your Apple keyboard to your smart TV or your game console with full keyboard functionality.
+* RaspiKey supports **any bluetooth keyboard** but it currently offers multimedia key support only for the Apple Wireless (A1314) and the Apple Magic (A1644) models. Furthermore, RaspiKey **can be used on any device** that accepts a standard USB keyboard. This means that you can use an Apple keyboard on a PC, a smart TV or on a game console.
+* It does not require a driver installation or other software. It is also completely self-powered through the USB port.
+* It is **secure**. As it is a hardware device, there is no software driver running on your PC that can be hacked, intercepted or compromised compared to a software solution. You have full access to its **source code** to review it, or even build it yourself.
 * It is based on a cut-down, readonly version of the official Raspbian Linux. Even though it runs an OS internally, there is no need for a shutdown process, you just unplug it when you want.
-* Supports **Custom Keymaps**, allowing you to customise and remap any key.
-* **No impact on keyboard input latency**. Measurements with the Apple Wireless Keyboard on RaspiKey achieve a minimum latency of **12 msec**. This performs as good as the Apple Magic Keyboard does when directly connected to the PC's USB port (that is, no Bluetooth and no RaspiKey device in the middle!). For a relative comparison and discussion on keyboard latencies you can look [here](https://danluu.com/keyboard-latency/).
+* RaspiKey supports **Custom Keymaps**, allowing you to customise and remap keyboard keys.
+* No measured impact on keyboard **input latency**. Measurements with the Apple Wireless Keyboard on RaspiKey showed a minimum latency of **12 msec**. This performs as good as the Apple Magic Keyboard does when directly connected to the USB port (that is, no Bluetooth and no RaspiKey device in the middle). For a relative comparison and discussion on keyboard latencies you can look [here](https://danluu.com/keyboard-latency/).
 
 
 Images
