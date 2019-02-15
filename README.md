@@ -15,7 +15,7 @@ Features
 * It is **secure**. As it is a hardware device, there is no software driver running on your PC that can be hacked, intercepted or compromised compared to a software solution. You have full access to its **source code** to review it, or even build it yourself.
 * It is based on a cut-down, readonly version of the official Raspbian Linux. Even though it runs an OS internally, there is no need for a shutdown process, you just unplug it when you want.
 * RaspiKey supports **Custom Keymaps**, allowing you to customise and remap keyboard keys.
-* No measured impact on keyboard **input latency**. Measurements with the Apple Wireless Keyboard on RaspiKey showed a minimum latency of **12 msec**. This performs as good as the Apple Magic Keyboard does when directly connected to the USB port (that is, no Bluetooth and no RaspiKey device in the middle). For a relative comparison and discussion on keyboard latencies you can look [here](https://danluu.com/keyboard-latency/).
+* No impact on **input latency**. Measurements on the Apple Wireless Keyboard on RaspiKey showed an input latency of *12 msec* (surprisingly better than certain so-called *gaming* keyboards). So this performs as good as the Apple Magic Keyboard when directly connected via USB cable (that is, without RaspiKey). For a relative comparison and discussion you can look [here](https://danluu.com/keyboard-latency/).
 
 
 Images
@@ -29,7 +29,7 @@ Hardware and Software Requirements
 ----------------------------------
 
 1. A plain [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/) board.
-2. A 2GB micro SD card.
+2. A 2GB (or bigger) micro SD card.
 3. Access to a modern Windows PC with the Chrome browser. You need this to build your new RaspiKey device and tether a Bluetooth keyboard to it for the first time.
 
 Setting up a new RaspiKey Device
@@ -40,12 +40,12 @@ Setting up a new RaspiKey Device
 3. Download the latest RaspiKey release **raspikey.zip** and the latest Raspbian headless release **...-raspbian-stretch-lite-headless.xz** from [here](https://github.com/samartzidis/RaspiKey/releases).
 4. Run Etcher to write the **...-raspbian-stretch-lite-headless.xz** image to the SD card.
 5. Open the downloaded **raspikey.zip** file and copy all of its contents (setup, start.sh) directly to the the SD card. The SD card should appear on Windows as a drive named **boot**.
-6. Now insert the SD card to the “Raspberry Pi Zero W” device and connect it to the PC using just the middle micro-USB port (labelled “USB” in tiny white letters). The Raspberry Pi will both draw power from this port as well as use it to communicate with the PC.
-7. The Pi will boot and continue the setup. This process should last about 3-4 minutes. You will be able to tell when it's finished when the Raspberry Pi's **green led turns off** (at it stays solid green during the setup process). Once that happens, unplug it from the PC's USB port.
+6. Now insert the SD card to the “Raspberry Pi Zero W” device and connect it to the PC using just the middle micro-USB port (labelled “USB” in tiny white letters).
+7. The Pi will boot and continue its setup. This process will last about 3-4 minutes. You will be able to tell when it's finished when the Raspberry Pi's **green led goes off** (it stays solid green during setup). Once that happens, unplug it from the PC's USB port.
 8. Your new RaspiKey device is now fully configured and ready to use.
 
-RaspiKey Usage
---------------
+RaspiKey Use
+------------
 
 1. Plug RaspiKey to a PC.
 2. Wait for about 10 seconds for it to start and open Chrome or Firefox at **[http://raspikey.local](http://raspikey.local)**. 
@@ -55,7 +55,7 @@ RaspiKey Usage
 Known Issues
 ------------
 
-*   The battery level indicator does not yet work for the Apple Magic (A1644) keyboard.
+*   The battery level indicator does not yet work on the Apple Magic (A1644) keyboard.
 *   The Ctrl-LShift-T combination does not work on Apple keyboards, use the Ctrl-RShift-T instead where applicable.
 
 Apple Keyboards Keymap
