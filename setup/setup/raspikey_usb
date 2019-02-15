@@ -45,8 +45,8 @@ echo MSFT100 > os_desc/qw_sign
 mkdir -p functions/rndis.usb0  # network
 echo RNDIS   > functions/rndis.usb0/os_desc/interface.rndis/compatible_id
 echo 5162001 > functions/rndis.usb0/os_desc/interface.rndis/sub_compatible_id
-echo "42:63:65:13:34:56" > functions/rndis.usb0/host_addr
-echo "42:63:65:66:43:21" > functions/rndis.usb0/dev_addr
+echo "42:63:65:35:18:23" > functions/rndis.usb0/host_addr
+echo "42:63:65:88:43:26" > functions/rndis.usb0/dev_addr
 ln -s functions/rndis.usb0 configs/c.1/
 ln -s configs/c.1 os_desc
 
