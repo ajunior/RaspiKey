@@ -17,10 +17,6 @@ Features
 * RaspiKey supports **Custom Keymaps**, allowing you to customise and remap keyboard keys.
 * In regards to **input latency**, measurements with the Apple Wireless Keyboard achieved an minimum input latency of about *11 msec*. Based on [these](https://danluu.com/keyboard-latency/) results, the latency impact of RaspiKey is negligible.
 
-
-(surprisingly better than certain so-called *gaming* keyboards). So this performs as good as the Apple Magic Keyboard when directly connected via USB cable (that is, without RaspiKey). For a relative comparison and discussion you can look [here](https://danluu.com/keyboard-latency/).
-
-
 Images
 ------
 
