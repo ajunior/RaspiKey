@@ -2,10 +2,6 @@
 
 # Description: usb_gadget configuration script for raspikey_usb device
 #
-# Installation:
-#	Place into /usr/sbin/raspikey_usb and then edit /etc/rc.local and add the following line just before the last line containing "exit 0":
-#	/usr/sbin/raspikey_usb
-#
 
 if [ -d "/sys/kernel/config/usb_gadget/raspikey" ]
 then
